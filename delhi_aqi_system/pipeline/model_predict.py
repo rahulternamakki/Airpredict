@@ -22,9 +22,8 @@ def get_aqi_category(aqi: float) -> str:
 
 def predict_future_days(live_data_path: str, models_path: str, output_dir: str):
     """
-    Predicts Day+1, Day+2, Day+3 AQI for each region and Overall Delhi.
-    Updates historical context dynamically by persisting features and predicting AQI.
-    Uses `live_data_path` as the source of the recent data context (e.g. from an API).
+    Predicts Day+1, Day+2, Day+3 AQI for each region and Overall Delhi using the Direct Multi-Output strategy.
+    Loads 18 individual models and applies them to the current live data feature snapshot.
     """
     os.makedirs(output_dir, exist_ok=True)
     logging.info("Loading models...")
@@ -33,111 +32,101 @@ def predict_future_days(live_data_path: str, models_path: str, output_dir: str):
     logging.info(f"Loading live data context from {live_data_path}...")
     df_raw = load_and_validate_data(live_data_path)
     
-    regions = [r for r in df_raw['region_name'].unique() if r != 'Overall Delhi']
+    # Identify unique regions
+    regions = [r for r in df_raw['region_name'].unique()]
+    specific_regions = [r for r in regions if r != 'Overall Delhi']
     
-    # Take the last 14 days of data to provide enough context for rolling means and lags
+    # Ensure "Overall Delhi" is in the loop if models exist for it
+    if "Overall Delhi" in all_models and "Overall Delhi" not in regions:
+        regions.append("Overall Delhi")
+    
+    # Determine feature names from one of the models
+    # Check "North Delhi" specifically as it's a reliable key name in your training script
+    model_keys = list(all_models.keys())
+    first_region = "North Delhi" if "North Delhi" in all_models else model_keys[0]
+    expected_features = all_models[first_region]['day_1'].feature_names_in_
+    
+    # Prepare features for the most recent timestamp available
     last_date = df_raw['datetime'].max()
+    df_recent = df_raw[df_raw['datetime'] == last_date].copy()
+    
+    # Run feature engineering on the recent window to get latest lags/rolling means
+    # We take enough trailing data to compute features correctly
     cutoff_date = last_date - pd.Timedelta(days=14)
     df_context = df_raw[df_raw['datetime'] >= cutoff_date].copy()
+    df_feats = engineer_features(df_context)
     
-    # We use North Delhi to get the list of expected features as all specific regional models share the structure
-    expected_features = all_models['North Delhi'].feature_names_in_
+    # Get the feature rows for the very last date
+    latest_feats = df_feats[df_feats['datetime'] == last_date]
     
     # Initialize output structure
-    predictions = {}
+    predictions_output = {}
+    
     for r in regions:
-        display_name = f"{r} Delhi"
-        predictions[display_name] = {"day_1": 0, "day_2": 0, "day_3": 0, "category": []}
-    predictions["Overall Delhi"] = {"day_1": 0, "day_2": 0, "day_3": 0, "category": []}
-    
-    current_context = df_context.copy()
-    
-    # Predict recursively for 3 days
-    for step in range(1, 4):
-        next_date = last_date + pd.Timedelta(days=step)
-        logging.info(f"Generating features and predicting for Day {step}: {next_date.strftime('%Y-%m-%d')}")
-        
-        new_rows = []
-        for r in regions:
-            # We copy weather/pollutants from the last available step for this region (Persistence forecasting)
-            last_row = current_context[current_context['region_name'] == r].iloc[-1].copy()
-            last_row['datetime'] = next_date
-            last_row['AQI'] = np.nan # Must be predicted
-            new_rows.append(last_row.to_frame().T)
-            
-        current_context = pd.concat([current_context] + new_rows, ignore_index=True)
-        current_context['datetime'] = pd.to_datetime(current_context['datetime'])
-        
-        # Ensure sorting before running feature engineering
-        current_context.sort_values(by=['region_name', 'datetime'], ascending=True, inplace=True)
-        current_context.reset_index(drop=True, inplace=True)
-        
-        # Run feature engineering on the updated context
-        df_feats = engineer_features(current_context.copy())
-        
-        # Extract the exact row for `next_date` which has all lag features populated
-        day_df = df_feats[df_feats['datetime'] == next_date]
-        
-        for r in regions:
-            display_name = f"{r} Delhi"
-            region_df = day_df[day_df['region_name'] == r].copy()
-            
-            if region_df.empty:
-                logging.warning(f"No features generated for {r} on {next_date}. Skipping.")
+        display_name = r if "Delhi" in r else f"{r} Delhi"
+        # The trained model dict keys are usually "North Delhi", "South Delhi", etc.
+        # Check against available keys in all_models
+        model_key = display_name
+        if model_key not in all_models:
+            # Fallback for name variations
+            alternative_keys = [k for k in all_models.keys() if r.lower() in k.lower()]
+            if alternative_keys:
+                model_key = alternative_keys[0]
+            else:
+                logging.warning(f"No model found for region: {r}. Skipping.")
                 continue
-                
-            X = region_df[[col for col in expected_features if col in region_df.columns]].copy()
-            for col in expected_features:
-                if col not in X.columns:
-                    X[col] = 0
-            
-            X = X[expected_features].astype(float)
-            pred_aqi = float(all_models[display_name].predict(X)[0])
-            
-            predictions[display_name][f"day_{step}"] = round(pred_aqi, 2)
-            predictions[display_name]["category"].append(get_aqi_category(pred_aqi))
-            
-            # Write prediction back to current context so next day can use it as lag
-            mask = (current_context['region_name'] == r) & (current_context['datetime'] == next_date)
-            current_context.loc[mask, 'AQI'] = pred_aqi
-            
-        # Predict Overall Delhi (by averaging the engineered feature vectors of all regions)
-        overall_features_df = day_df[day_df['region_name'].isin(regions)].mean(numeric_only=True).to_frame().T
-        X_overall = overall_features_df[[col for col in expected_features if col in overall_features_df.columns]].copy()
+
+        predictions_output[display_name] = {"day_1": 0, "day_2": 0, "day_3": 0, "category": []}
         
+        # Get features for this specific region
+        region_feat_row = latest_feats[latest_feats['region_name'] == r].copy()
+        
+        if region_feat_row.empty and r == 'Overall Delhi':
+            # Compute Overall Delhi features as average of all specific regions
+            region_feat_row = latest_feats[latest_feats['region_name'].isin(specific_regions)].mean(numeric_only=True).to_frame().T
+        
+        if region_feat_row.empty:
+            logging.warning(f"No features found for region {r} at {last_date}")
+            continue
+
+        # Prepare X vector
+        X = region_feat_row[[col for col in expected_features if col in region_feat_row.columns]].copy()
         for col in expected_features:
-            if col not in X_overall.columns:
-                X_overall[col] = 0
-                
-        X_overall = X_overall[expected_features].astype(float)
-        pred_overall_aqi = float(all_models["Overall Delhi"].predict(X_overall)[0])
+            if col not in X.columns:
+                X[col] = 0
+        X = X[expected_features].astype(float)
         
-        predictions["Overall Delhi"][f"day_{step}"] = round(pred_overall_aqi, 2)
-        predictions["Overall Delhi"]["category"].append(get_aqi_category(pred_overall_aqi))
-        
+        # Predict for each of the 3 independent horizons
+        for step in range(1, 4):
+            model = all_models[model_key][f"day_{step}"]
+            pred_aqi = float(model.predict(X)[0])
+            
+            predictions_output[display_name][f"day_{step}"] = round(pred_aqi, 2)
+            predictions_output[display_name]["category"].append(get_aqi_category(pred_aqi))
+            
     output = {
-        "prediction_date": (last_date + pd.Timedelta(days=1)).strftime("%Y-%m-%d"),
+        "prediction_date_start": (last_date + pd.Timedelta(days=1)).strftime("%Y-%m-%d"),
         "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "regions": predictions
+        "regions": predictions_output
     }
     
     out_file = os.path.join(output_dir, 'predictions_3day.json')
     with open(out_file, 'w') as f:
         json.dump(output, f, indent=2)
         
-    logging.info(f"✅ Multi-step Prediction successfully generated and saved to {out_file}")
-    
-    # Print sample of the JSON object directly to the console
+    logging.info(f"✅ 3-Day Forecast JSON successfully generated (Direct Multi-Output) and saved to {out_file}")
     print("\n--- 3-Day Forecast JSON Output ---")
     print(json.dumps(output, indent=2))
 
 if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # Use live_data.csv if exists, else fallback to main dataset last row
     live_data_path = os.path.join(base_dir, 'data', 'raw', 'live_data.csv')
+    if not os.path.exists(live_data_path):
+        live_data_path = os.path.join(base_dir, 'Delhi_AQI_final.csv')
+        
     models_path = os.path.join(base_dir, 'models', 'saved', 'delhi_aqi_all_regions.pkl')
     output_dir = os.path.join(base_dir, 'outputs', 'predictions')
     
-    # Suppress print output of sub-functions if desired
-    import sys, io
-    logging.info("Starting recursive 3-day forecasting...")
+    logging.info("Starting Direct 3-day forecasting...")
     predict_future_days(live_data_path, models_path, output_dir)
