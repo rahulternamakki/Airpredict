@@ -56,6 +56,16 @@ def load_and_validate_data(filepath: str) -> pd.DataFrame:
     print(f"Data loaded successfully. Shape: {df.shape}")
     return df
 
+def load_live_data(source: str) -> pd.DataFrame:
+    """
+    API-Ready Design: Loads live data from a source.
+    Currently 'source' is a CSV file path. Future implementations can replace this with an API endpoint (e.g. CPCB API) without affecting the pipeline.
+    """
+    if source.endswith('.csv'):
+        return load_and_validate_data(source)
+    else:
+        raise NotImplementedError("Currently only CSV sources are supported.")
+
 if __name__ == "__main__":
-    df = load_and_validate_data('../data/raw/Delhi_AQI_final.csv')
+    df = load_live_data('../data/raw/Delhi_AQI_final.csv')
     print(df.head())

@@ -5,7 +5,7 @@ import os
 import json
 import logging
 from datetime import datetime
-from data_loader import load_and_validate_data
+from data_loader import load_live_data
 from feature_engineering import engineer_features
 
 # Setup logging
@@ -30,7 +30,7 @@ def predict_future_days(live_data_path: str, models_path: str, output_dir: str):
     all_models = joblib.load(models_path)
     
     logging.info(f"Loading live data context from {live_data_path}...")
-    df_raw = load_and_validate_data(live_data_path)
+    df_raw = load_live_data(live_data_path)
     
     # Identify unique regions
     regions = [r for r in df_raw['region_name'].unique()]
@@ -44,7 +44,11 @@ def predict_future_days(live_data_path: str, models_path: str, output_dir: str):
     # Check "North Delhi" specifically as it's a reliable key name in your training script
     model_keys = list(all_models.keys())
     first_region = "North Delhi" if "North Delhi" in all_models else model_keys[0]
-    expected_features = all_models[first_region]['day_1'].feature_names_in_
+    
+    model_ref = all_models[first_region]['day_1']
+    if not hasattr(model_ref, 'feature_names_in_'):
+        raise ValueError("Model missing feature_names_in_. Retrain with named DataFrame.")
+    expected_features = model_ref.feature_names_in_
     
     # Prepare features for the most recent timestamp available
     last_date = df_raw['datetime'].max()
@@ -55,6 +59,12 @@ def predict_future_days(live_data_path: str, models_path: str, output_dir: str):
     cutoff_date = last_date - pd.Timedelta(days=14)
     df_context = df_raw[df_raw['datetime'] >= cutoff_date].copy()
     df_feats = engineer_features(df_context)
+    
+    # NaN check after feature engineering
+    nan_cols = [col for col in expected_features if col in df_feats.columns and df_feats[col].isna().any()]
+    if nan_cols:
+        logging.warning(f"NaN in features: {nan_cols} — filling with 0")
+        df_feats[nan_cols] = df_feats[nan_cols].fillna(0)
     
     # Get the feature rows for the very last date
     latest_feats = df_feats[df_feats['datetime'] == last_date]
