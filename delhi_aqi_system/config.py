@@ -15,3 +15,9 @@ GEMINI_TOP_P       = 0.85
 LATEST_RESULT_PATH = "outputs/latest_result.json"
 MAX_RETRIES        = 3
 STALENESS_HOURS    = 30                       # Warn user if data older than this
+
+# Phase 7 additions
+AGENT_MODEL       = "gemini-1.5-flash"   # Flash for live chat (fast + cost-efficient)
+AGENT_TEMPERATURE = 0.7                  # More conversational than Phase 6 (0.2)
+AGENT_MAX_TOKENS  = 1024
+HISTORY_MAX_TURNS = 20                   # Max turns before trimming oldest
