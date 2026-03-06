@@ -1,0 +1,26 @@
+{
+  "prediction_date": "2025-01-01",
+  "generated_at": "2026-03-06 10:33:11",
+  "regions": {
+    "West Delhi": {
+      "day_1": 385.75,
+      "day_2": 395.61,
+      "day_3": 395.48,
+      "category": [
+        "Very Poor",
+        "Very Poor",
+        "Very Poor"
+      ]
+    },
+    "Overall Delhi": {
+      "day_1": 63.83,
+      "day_2": 64.45,
+      "day_3": 64.48,
+      "category": [
+        "Satisfactory",
+        "Satisfactory",
+        "Satisfactory"
+      ]
+    }
+  }
+}
