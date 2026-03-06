@@ -19,7 +19,9 @@ def perform_shap_analysis(live_data_path: str, models_path: str, output_dir: str
     Outputs:
     - Global Summary & Beeswarm plots per region per day.
     - Local Waterfall plots for the latest prediction per region per day.
-    - JSON structured payload mapping top feature impacts for downstream Counterfactual use.
+    - JSON structured payloads: 
+        - shap_values.json (top 5 for explain)
+        - shap_candidates.json (top 15 for counterfactual)
     """
     os.makedirs(output_dir, exist_ok=True)
     logging.info("Loading models for SHAP analysis...")
@@ -46,7 +48,7 @@ def perform_shap_analysis(live_data_path: str, models_path: str, output_dir: str
     last_date = df_raw['datetime'].max()
     
     # We take enough trailing data to get some context for the explainer's background
-    cutoff_date = last_date - pd.Timedelta(days=30) # 30 days for global background
+    cutoff_date = last_date - pd.Timedelta(days=30) 
     df_context = df_raw[df_raw['datetime'] >= cutoff_date].copy()
     df_feats = engineer_features(df_context)
     
@@ -57,7 +59,8 @@ def perform_shap_analysis(live_data_path: str, models_path: str, output_dir: str
         
     latest_feats = df_feats[df_feats['datetime'] == last_date]
     
-    shap_outputs = []
+    explain_output = []
+    candidate_output = []
     
     for r in regions:
         display_name = r if "Delhi" in r else f"{r} Delhi"
@@ -101,7 +104,7 @@ def perform_shap_analysis(live_data_path: str, models_path: str, output_dir: str
             model = all_models[model_key][day_str]
             explainer = shap.TreeExplainer(model)
             
-            # Global SHAP (only if background data is sufficient, say > 10 rows)
+            # Global SHAP
             if len(X_bg) > 10:
                 X_bg_sample = shap.sample(X_bg, min(50, len(X_bg)))
                 shap_values_global = explainer(X_bg_sample)
@@ -119,10 +122,9 @@ def perform_shap_analysis(live_data_path: str, models_path: str, output_dir: str
                 plt.savefig(os.path.join(output_dir, f"{display_name.replace(' ', '_')}_Day{step}_global_beeswarm.png"))
                 plt.close()
 
-            # Local SHAP (for the current live instance)
+            # Local SHAP
             shap_values_local = explainer(X_live)
             
-            # Save Waterfall plot
             plt.figure(figsize=(10, 6))
             shap.plots.waterfall(shap_values_local[0], show=False)
             plt.title(f"Local SHAP Waterfall - {display_name} (Day+{step})")
@@ -130,7 +132,6 @@ def perform_shap_analysis(live_data_path: str, models_path: str, output_dir: str
             plt.savefig(os.path.join(output_dir, f"{display_name.replace(' ', '_')}_Day{step}_local_waterfall.png"))
             plt.close()
             
-            # Extract top 5-8 features pushing the AQI up for this particular instance
             vals = shap_values_local.values[0]
             base_val = float(shap_values_local.base_values[0])
             pred_val = float(model.predict(X_live)[0])
@@ -143,36 +144,45 @@ def perform_shap_analysis(live_data_path: str, models_path: str, output_dir: str
                     "actual_value": round(float(X_live.iloc[0, i]), 2)
                 })
                 
-            # Sort by absolute impact (to identify top drivers)
-            # But the spec also emphasizes "highest positive SHAP values" for counterfactual. 
-            # We'll just sort by positive impact descending here so the top are the ones pushing AQI up.
             feature_impacts_sorted = sorted(feature_impacts, key=lambda x: x['shap_value'], reverse=True)
-            top_features = feature_impacts_sorted[:5] # Take top 5 positive contributors
 
-            shap_outputs.append({
+            # Prepare outputs
+            explain_output.append({
                 "region": display_name,
                 "prediction_day": step,
                 "base_value": round(base_val, 2),
                 "predicted_value": round(pred_val, 2),
-                "top_features": top_features
+                "top_features": feature_impacts_sorted[:5] # Top 5 for SHAP Explanation
+            })
+
+            candidate_output.append({
+                "region": display_name,
+                "prediction_day": step,
+                "base_value": round(base_val, 2),
+                "predicted_value": round(pred_val, 2),
+                "top_features": feature_impacts_sorted[:15] # Top 15 for Counterfactual Candidates
             })
             
             logging.info(f"Processed SHAP for {display_name} Day+{step}")
 
-    # Save to JSON
-    out_json = os.path.join(output_dir, "shap_values.json")
-    with open(out_json, "w") as f:
-        json.dump(shap_outputs, f, indent=2)
-        
-    logging.info(f"✅ SHAP analysis completed. Top features mapped in {out_json}")
+    # Save outputs
+    explain_file = os.path.join(output_dir, 'shap_values.json')
+    with open(explain_file, 'w') as f:
+        json.dump(explain_output, f, indent=2)
+
+    candidate_file = os.path.join(output_dir, 'shap_candidates.json')
+    with open(candidate_file, 'w') as f:
+        json.dump(candidate_output, f, indent=2)
+
+    logging.info(f"✅ SHAP analysis completed. Explanation (Top 5) saved to {explain_file}. Candidates (Top 15) saved to {candidate_file}")
 
 if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    models_path = os.path.join(base_dir, 'models', 'saved', 'delhi_aqi_all_regions.pkl')
     live_data_path = os.path.join(base_dir, 'data', 'raw', 'live_data.csv')
     if not os.path.exists(live_data_path):
         live_data_path = os.path.join(base_dir, 'Delhi_AQI_final.csv')
-        
-    models_path = os.path.join(base_dir, 'models', 'saved', 'delhi_aqi_all_regions.pkl')
     output_dir = os.path.join(base_dir, 'outputs', 'shap')
-    
+
+    logging.info("Starting SHAP Analysis Pipeline...")
     perform_shap_analysis(live_data_path, models_path, output_dir)

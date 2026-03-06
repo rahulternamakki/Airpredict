@@ -260,43 +260,56 @@ for region in regions:
 
 ---
 
-### PHASE 5 — Counterfactual Analysis ("What-If") using DiCE
+### PHASE 5 — Counterfactual Analysis ("What-If") using Feature Perturbation
 
 #### Step 5.1 — Feature Selection for Counterfactuals
 - **Source: Top 5 features ranked by SHAP contribution for the actual Day+1 prediction** (local SHAP values from Phase 4, not global importance)
 - Specifically, take the 5 features with the **highest positive SHAP values** from the Day+1 local SHAP output per region — these are the features actively driving AQI upward in that specific prediction
 - This means counterfactual features are **dynamically determined per region per prediction run**, not hardcoded — different regions or dates may yield different top-5 features
 - The SHAP output from Step 4.4 is directly consumed here: sort `top_features` by `shap_value` descending → take top 5
-- Example: if SHAP for North Delhi Day+1 ranks [PM2.5, NO2, Traffic_Index, SO2, Humidity] as top 5 contributors → these 5 become the counterfactual variables for North Delhi
+- **Scientifically reducible filter (applied before finalising the top 5):** After ranking by SHAP, cross-check each candidate feature against a predefined **allowlist of human-controllable / reducible features** — only features on this list are eligible for counterfactual scenarios. Features that cannot be reduced by human intervention (e.g., Wind Speed, Temperature, Humidity, Atmospheric Pressure, Rainfall) are automatically excluded even if they appear in the SHAP top 5
+- **Allowlist of reducible features (examples — finalise based on actual dataset columns):**
+  - PM2.5, PM10 (vehicular + industrial emission control)
+  - NO2 (traffic restriction, fuel combustion reduction)
+  - SO2 (industrial regulation, fuel sulphur limits)
+  - CO (combustion source control)
+  - NOx (vehicle emission standards)
+  - Traffic Index / Vehicle Count (odd-even policy, congestion control)
+  - Crop Burning Index / Fire Count (stubble burning ban enforcement)
+  - Construction Dust Index (construction activity regulation)
+- **Non-reducible features (excluded from counterfactuals regardless of SHAP rank):** Wind Speed, Temperature, Relative Humidity, Atmospheric Pressure, Rainfall, Solar Radiation, Dew Point — these are meteorological/natural variables outside human control
+- If fewer than 5 reducible features appear in the SHAP top ranks, expand the SHAP candidate list (top 6, 7, etc.) until 5 reducible features are found
+- Example: if SHAP top 5 = [PM2.5, Wind Speed, NO2, Temperature, SO2] → Wind Speed and Temperature are excluded → expand to next SHAP ranks → final counterfactual features become [PM2.5, NO2, SO2, Traffic_Index, PM10]
 
-#### Step 5.2 — DiCE Library Setup
-- Use **DiCE (Diverse Counterfactual Explanations)** — `dice_ml` library — the research-standard tool for generating counterfactual explanations for ML models
-- DiCE generates counterfactuals by finding realistic alternative input values that would change the model's output (AQI) to a desired target range
-- DiCE integration steps:
-  - Wrap the trained XGBRegressor in a `dice_ml.Model` object: `dice_ml.Model(model=all_models[region]["day_1"], backend="sklearn")`
-  - Wrap the training data in a `dice_ml.Data` object: specify feature names, continuous features, and the outcome column
-  - Mark the top 5 SHAP features as the **features to vary** (`features_to_vary`) — all other features are kept fixed at their live observed values
-  - Set realistic feature ranges/constraints (e.g., PM2.5 cannot go below 0, Wind Speed cannot exceed physically realistic bounds) using DiCE's `permitted_range` parameter
-  - Instantiate the DiCE explainer: `dice_ml.Dice(dice_data, dice_model, method="random")` — random method works well for XGBoost at research level
+#### Step 5.2 — Feature Perturbation Approach
+- **Method:** Take the live input row `X_live`, make a copy, modify the value of one or more top SHAP features by a fixed percentage, then re-run `all_models[region]["day_1"].predict()` on the modified row
+- No external library needed — uses the already-loaded XGBoost model directly
+- Perturbation rules:
+  - All features reaching this step are from the reducible allowlist (Step 5.1) — apply a **reduction of 25%** uniformly across all of them
+  - Meteorological features (Wind Speed, Temperature, Humidity, etc.) never reach this step — they are filtered out in Step 5.1
+  - All non-perturbed features remain at their original live observed values
+- Perturbation percentage (25%) is a fixed research-level assumption — kept consistent across all scenarios for fair comparison
+- Perturbation logic per scenario:
+```python
+X_cf = X_live.copy()
+X_cf[feature] = X_cf[feature] * (1 - 0.25)   # reduce by 25%
+new_aqi = all_models[region]["day_1"].predict(X_cf)[0]
+```
 
 #### Step 5.3 — Individual Feature Counterfactuals (5 scenarios — one per top SHAP feature)
-For each of the 5 SHAP-selected features, generate DiCE counterfactuals constraining only that one feature to vary:
-- **Scenario 1:** Vary only [SHAP Feature #1] → DiCE finds values that reduce AQI
-- **Scenario 2:** Vary only [SHAP Feature #2] → DiCE finds values that reduce AQI
-- **Scenario 3:** Vary only [SHAP Feature #3] → DiCE finds values that reduce AQI
-- **Scenario 4:** Vary only [SHAP Feature #4] → DiCE finds values that reduce AQI
-- **Scenario 5:** Vary only [SHAP Feature #5] → DiCE finds values that reduce AQI
-- Set `desired_range` in DiCE to target a lower AQI bracket (e.g., if original AQI = 187 "Unhealthy", target `desired_range=[0, 150]`)
-- For meteorological features (e.g., Wind Speed) where increase improves AQI, set `permitted_range` accordingly
-- Extract from DiCE output: the counterfactual feature value, the resulting predicted AQI, delta, new category
+For each of the 5 SHAP-selected features, perturb only that one feature while keeping all others fixed:
+- **Scenario 1:** [SHAP Feature #1] perturbed by 25% → re-predict AQI
+- **Scenario 2:** [SHAP Feature #2] perturbed by 25% → re-predict AQI
+- **Scenario 3:** [SHAP Feature #3] perturbed by 25% → re-predict AQI
+- **Scenario 4:** [SHAP Feature #4] perturbed by 25% → re-predict AQI
+- **Scenario 5:** [SHAP Feature #5] perturbed by 25% → re-predict AQI
 - Report per scenario: Original AQI → Counterfactual AQI → Delta → New AQI Category
 
 #### Step 5.4 — Combined Feature Counterfactuals (2–3 scenarios)
-Allow DiCE to vary multiple SHAP-selected features simultaneously for realistic policy interventions:
-- **Combined Scenario A:** `features_to_vary` = Top 2 SHAP features → DiCE generates diverse counterfactuals → simulates "dual-source intervention"
-- **Combined Scenario B:** `features_to_vary` = Top 3 SHAP features → simulates "tri-source intervention"
-- **Combined Scenario C:** `features_to_vary` = All top 5 SHAP features → simulates "moderate across-the-board" policy
-- For each combined scenario, generate `num_counterfactuals=3` diverse DiCE solutions and report the best one (lowest AQI achieved)
+Perturb multiple SHAP-selected features simultaneously in a single modified `X_cf` row:
+- **Combined Scenario A:** Perturb Top 2 SHAP features by 25% each → re-predict → simulates "dual-source intervention"
+- **Combined Scenario B:** Perturb Top 3 SHAP features by 25% each → re-predict → simulates "tri-source intervention"
+- **Combined Scenario C:** Perturb all Top 5 SHAP features by 15% each → re-predict → simulates "moderate across-the-board" policy
 - Show AQI improvement delta per region for each combined scenario
 
 #### Step 5.5 — Counterfactual Output Format
@@ -305,29 +318,29 @@ Allow DiCE to vary multiple SHAP-selected features simultaneously for realistic 
   "region": "North Delhi",
   "original_day1_aqi": 187,
   "original_category": "Unhealthy",
-  "method": "DiCE (Diverse Counterfactual Explanations)",
+  "method": "Feature Perturbation",
   "scenarios": [
     {
-      "name": "Vary PM2.5 only",
+      "name": "PM2.5 reduced by 25%",
       "type": "individual",
-      "features_varied": ["PM2.5"],
-      "original_feature_values": {"PM2.5": 156.2},
-      "counterfactual_feature_values": {"PM2.5": 98.4},
-      "new_aqi": 159,
+      "feature_changes": {"PM2.5": -25},
+      "original_feature_value": {"PM2.5": 156.2},
+      "perturbed_feature_value": {"PM2.5": 117.2},
+      "new_aqi": 162,
       "new_category": "Unhealthy for Sensitive Groups",
-      "aqi_reduction": 28,
-      "percent_improvement": "15.0%"
+      "aqi_reduction": 25,
+      "percent_improvement": "13.4%"
     },
     {
-      "name": "Top 3 features combined",
+      "name": "Top 3 features reduced by 25%",
       "type": "combined",
-      "features_varied": ["PM2.5", "NO2", "Traffic_Index"],
+      "feature_changes": {"PM2.5": -25, "NO2": -25, "Traffic_Index": -25},
       "original_feature_values": {"PM2.5": 156.2, "NO2": 89.3, "Traffic_Index": 0.78},
-      "counterfactual_feature_values": {"PM2.5": 91.0, "NO2": 55.1, "Traffic_Index": 0.45},
-      "new_aqi": 131,
+      "perturbed_feature_values": {"PM2.5": 117.2, "NO2": 67.0, "Traffic_Index": 0.59},
+      "new_aqi": 138,
       "new_category": "Unhealthy for Sensitive Groups",
-      "aqi_reduction": 56,
-      "percent_improvement": "29.9%"
+      "aqi_reduction": 49,
+      "percent_improvement": "26.2%"
     }
   ]
 }
@@ -588,7 +601,7 @@ This is a proof-of-concept. Acceptance criteria:
 | Hyperparameter Tuning | Optuna |
 | Model Serialization | `joblib` or `pickle` |
 | SHAP | `shap` library (TreeExplainer) |
-| Counterfactual | DiCE — `dice_ml` library (Diverse Counterfactual Explanations) |
+| Counterfactual | Custom Feature Perturbation (copy `X_live` → modify top SHAP features → re-predict) |
 | LLM | Google Gemini API (`google-generativeai`) |
 | Frontend | Streamlit |
 | Data Processing | Pandas, NumPy |
@@ -653,7 +666,7 @@ Live Data CSV (recent) — via `load_live_data()` module (CSV now, API-swappable
 | Chronological 80-20 split | Time series data has temporal dependency; random split would cause data leakage from future to past |
 | Direct Multi-Output forecasting (3 separate XGBRegressor models per region per horizon) | Each horizon trained independently with its own shifted target — no recursive dependency at prediction time. Nested dict structure `all_models[region]["day_N"]` gives clean `.predict(X_live)` calls and works perfectly with `shap.TreeExplainer` since each model is a plain XGBRegressor |
 | SHAP TreeExplainer | Exact SHAP values for tree models; faster and more accurate than model-agnostic methods |
-| DiCE (`dice_ml`) for counterfactual generation | Research-standard library purpose-built for counterfactual explanations; generates realistic diverse alternatives by respecting feature constraints and `permitted_range` — more principled than manual feature perturbation |
+| Feature Perturbation for counterfactuals | Simplest method consistent with XGBoost — copy `X_live`, modify top SHAP feature values by a fixed %, re-predict. No external library needed; fully transparent and easy to interpret |
 | Two separate Gemini agents | Different user personas require different language registers, depth, and focus areas |
 | Session-based pipeline | Prevents redundant computation in Streamlit; runs once per data upload |
 
