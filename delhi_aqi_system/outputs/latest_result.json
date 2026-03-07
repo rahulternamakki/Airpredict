@@ -1,0 +1,1486 @@
+{
+  "date": "2025-01-01",
+  "pipeline_ran_at": "2026-03-06T20:17:52.434667",
+  "gemini_model_used": "gemini-1.5-pro",
+  "gemini_attempts": 3,
+  "validation_warnings": [
+    "TOO_SHORT: 'prediction_explanation' is 178 chars, minimum is 400",
+    "TOO_SHORT: 'shap_interpretation' is 164 chars, minimum is 400",
+    "TOO_SHORT: 'counterfactual_analysis' is 207 chars, minimum is 400",
+    "TOO_SHORT: 'health_impact_summary' is 198 chars, minimum is 250"
+  ],
+  "predictions": {
+    "prediction_date_start": "2025-01-01",
+    "generated_at": "2026-03-06 20:16:46",
+    "regions": {
+      "Central Delhi": {
+        "day_1": 302.44,
+        "day_2": 207.32,
+        "day_3": 295.83,
+        "category": [
+          "Very Poor",
+          "Poor",
+          "Poor"
+        ]
+      },
+      "West Delhi": {
+        "day_1": 305.42,
+        "day_2": 280.45,
+        "day_3": 301.41,
+        "category": [
+          "Very Poor",
+          "Poor",
+          "Very Poor"
+        ]
+      },
+      "East Delhi": {
+        "day_1": 311.51,
+        "day_2": 219.8,
+        "day_3": 284.68,
+        "category": [
+          "Very Poor",
+          "Poor",
+          "Poor"
+        ]
+      },
+      "South Delhi": {
+        "day_1": 270.9,
+        "day_2": 230.07,
+        "day_3": 278.3,
+        "category": [
+          "Poor",
+          "Poor",
+          "Poor"
+        ]
+      },
+      "North Delhi": {
+        "day_1": 288.58,
+        "day_2": 273.61,
+        "day_3": 238.37,
+        "category": [
+          "Poor",
+          "Poor",
+          "Poor"
+        ]
+      },
+      "Overall Delhi": {
+        "day_1": 293.33,
+        "day_2": 200.05,
+        "day_3": 273.81,
+        "category": [
+          "Poor",
+          "Poor",
+          "Poor"
+        ]
+      }
+    }
+  },
+  "shap": [
+    {
+      "region": "Central Delhi",
+      "prediction_day": 1,
+      "base_value": 199.48,
+      "predicted_value": 302.44,
+      "top_features": [
+        {
+          "feature": "pm25",
+          "shap_value": 63.09,
+          "actual_value": 154.62
+        },
+        {
+          "feature": "AQI_rolling_mean_7",
+          "shap_value": 25.1,
+          "actual_value": 293.0
+        },
+        {
+          "feature": "inversion_flag",
+          "shap_value": 9.8,
+          "actual_value": 1.0
+        },
+        {
+          "feature": "temp_humidity_interaction",
+          "shap_value": 6.9,
+          "actual_value": 1011.26
+        },
+        {
+          "feature": "co_lag1",
+          "shap_value": 5.33,
+          "actual_value": 1.07
+        }
+      ]
+    },
+    {
+      "region": "Central Delhi",
+      "prediction_day": 2,
+      "base_value": 199.08,
+      "predicted_value": 207.32,
+      "top_features": [
+        {
+          "feature": "pm25",
+          "shap_value": 47.75,
+          "actual_value": 154.62
+        },
+        {
+          "feature": "msl",
+          "shap_value": 18.14,
+          "actual_value": 1021.42
+        },
+        {
+          "feature": "temp_humidity_interaction",
+          "shap_value": 9.48,
+          "actual_value": 1011.26
+        },
+        {
+          "feature": "month",
+          "shap_value": 6.94,
+          "actual_value": 12.0
+        },
+        {
+          "feature": "no2_lag1",
+          "shap_value": 4.17,
+          "actual_value": 33.56
+        }
+      ]
+    },
+    {
+      "region": "Central Delhi",
+      "prediction_day": 3,
+      "base_value": 198.63,
+      "predicted_value": 295.83,
+      "top_features": [
+        {
+          "feature": "pm25",
+          "shap_value": 52.05,
+          "actual_value": 154.62
+        },
+        {
+          "feature": "msl",
+          "shap_value": 46.33,
+          "actual_value": 1021.42
+        },
+        {
+          "feature": "month",
+          "shap_value": 13.11,
+          "actual_value": 12.0
+        },
+        {
+          "feature": "temp_humidity_interaction",
+          "shap_value": 6.47,
+          "actual_value": 1011.26
+        },
+        {
+          "feature": "t2m",
+          "shap_value": 5.9,
+          "actual_value": 11.08
+        }
+      ]
+    },
+    {
+      "region": "West Delhi",
+      "prediction_day": 1,
+      "base_value": 252.3,
+      "predicted_value": 305.42,
+      "top_features": [
+        {
+          "feature": "pm25",
+          "shap_value": 52.88,
+          "actual_value": 178.75
+        },
+        {
+          "feature": "no2",
+          "shap_value": 8.06,
+          "actual_value": 53.59
+        },
+        {
+          "feature": "wind_speed",
+          "shap_value": 5.5,
+          "actual_value": 0.95
+        },
+        {
+          "feature": "temp_humidity_interaction",
+          "shap_value": 4.58,
+          "actual_value": 998.22
+        },
+        {
+          "feature": "precip_mm",
+          "shap_value": 3.98,
+          "actual_value": 0.02
+        }
+      ]
+    },
+    {
+      "region": "West Delhi",
+      "prediction_day": 2,
+      "base_value": 251.62,
+      "predicted_value": 280.45,
+      "top_features": [
+        {
+          "feature": "pm25",
+          "shap_value": 25.71,
+          "actual_value": 178.75
+        },
+        {
+          "feature": "msl",
+          "shap_value": 14.98,
+          "actual_value": 1021.44
+        },
+        {
+          "feature": "month",
+          "shap_value": 13.7,
+          "actual_value": 12.0
+        },
+        {
+          "feature": "temp_humidity_interaction",
+          "shap_value": 8.24,
+          "actual_value": 998.22
+        },
+        {
+          "feature": "t2m",
+          "shap_value": 7.63,
+          "actual_value": 10.93
+        }
+      ]
+    },
+    {
+      "region": "West Delhi",
+      "prediction_day": 3,
+      "base_value": 251.18,
+      "predicted_value": 301.41,
+      "top_features": [
+        {
+          "feature": "msl",
+          "shap_value": 29.81,
+          "actual_value": 1021.44
+        },
+        {
+          "feature": "pm25",
+          "shap_value": 23.1,
+          "actual_value": 178.75
+        },
+        {
+          "feature": "month",
+          "shap_value": 20.49,
+          "actual_value": 12.0
+        },
+        {
+          "feature": "t2m",
+          "shap_value": 18.7,
+          "actual_value": 10.93
+        },
+        {
+          "feature": "temp_humidity_interaction",
+          "shap_value": 10.27,
+          "actual_value": 998.22
+        }
+      ]
+    },
+    {
+      "region": "East Delhi",
+      "prediction_day": 1,
+      "base_value": 224.31,
+      "predicted_value": 311.51,
+      "top_features": [
+        {
+          "feature": "pm25",
+          "shap_value": 56.14,
+          "actual_value": 174.84
+        },
+        {
+          "feature": "AQI_rolling_mean_7",
+          "shap_value": 10.69,
+          "actual_value": 286.14
+        },
+        {
+          "feature": "so2_lag1",
+          "shap_value": 6.17,
+          "actual_value": 4.5
+        },
+        {
+          "feature": "temp_humidity_interaction",
+          "shap_value": 5.35,
+          "actual_value": 1017.47
+        },
+        {
+          "feature": "so2",
+          "shap_value": 4.71,
+          "actual_value": 7.2
+        }
+      ]
+    },
+    {
+      "region": "East Delhi",
+      "prediction_day": 2,
+      "base_value": 222.64,
+      "predicted_value": 219.8,
+      "top_features": [
+        {
+          "feature": "pm25",
+          "shap_value": 31.53,
+          "actual_value": 174.84
+        },
+        {
+          "feature": "temp_humidity_interaction",
+          "shap_value": 8.26,
+          "actual_value": 1017.47
+        },
+        {
+          "feature": "so2_lag1",
+          "shap_value": 7.43,
+          "actual_value": 4.5
+        },
+        {
+          "feature": "no2_lag1",
+          "shap_value": 5.75,
+          "actual_value": 39.8
+        },
+        {
+          "feature": "msl",
+          "shap_value": 4.54,
+          "actual_value": 1021.42
+        }
+      ]
+    },
+    {
+      "region": "East Delhi",
+      "prediction_day": 3,
+      "base_value": 222.74,
+      "predicted_value": 284.68,
+      "top_features": [
+        {
+          "feature": "msl",
+          "shap_value": 42.2,
+          "actual_value": 1021.42
+        },
+        {
+          "feature": "pm25",
+          "shap_value": 28.12,
+          "actual_value": 174.84
+        },
+        {
+          "feature": "month",
+          "shap_value": 8.94,
+          "actual_value": 12.0
+        },
+        {
+          "feature": "so2_lag1",
+          "shap_value": 7.64,
+          "actual_value": 4.5
+        },
+        {
+          "feature": "so2",
+          "shap_value": 6.06,
+          "actual_value": 7.2
+        }
+      ]
+    },
+    {
+      "region": "South Delhi",
+      "prediction_day": 1,
+      "base_value": 206.43,
+      "predicted_value": 270.9,
+      "top_features": [
+        {
+          "feature": "pm25",
+          "shap_value": 42.82,
+          "actual_value": 132.29
+        },
+        {
+          "feature": "pm10",
+          "shap_value": 7.85,
+          "actual_value": 217.49
+        },
+        {
+          "feature": "month",
+          "shap_value": 7.82,
+          "actual_value": 12.0
+        },
+        {
+          "feature": "temp_humidity_interaction",
+          "shap_value": 6.86,
+          "actual_value": 1006.26
+        },
+        {
+          "feature": "msl",
+          "shap_value": 4.53,
+          "actual_value": 1021.38
+        }
+      ]
+    },
+    {
+      "region": "South Delhi",
+      "prediction_day": 2,
+      "base_value": 206.02,
+      "predicted_value": 230.07,
+      "top_features": [
+        {
+          "feature": "pm25",
+          "shap_value": 27.21,
+          "actual_value": 132.29
+        },
+        {
+          "feature": "msl",
+          "shap_value": 12.69,
+          "actual_value": 1021.38
+        },
+        {
+          "feature": "month",
+          "shap_value": 11.78,
+          "actual_value": 12.0
+        },
+        {
+          "feature": "temp_humidity_interaction",
+          "shap_value": 5.29,
+          "actual_value": 1006.26
+        },
+        {
+          "feature": "pm25_rolling_mean_7",
+          "shap_value": 3.74,
+          "actual_value": 142.08
+        }
+      ]
+    },
+    {
+      "region": "South Delhi",
+      "prediction_day": 3,
+      "base_value": 205.5,
+      "predicted_value": 278.3,
+      "top_features": [
+        {
+          "feature": "msl",
+          "shap_value": 52.15,
+          "actual_value": 1021.38
+        },
+        {
+          "feature": "pm25",
+          "shap_value": 33.55,
+          "actual_value": 132.29
+        },
+        {
+          "feature": "month",
+          "shap_value": 19.1,
+          "actual_value": 12.0
+        },
+        {
+          "feature": "no2",
+          "shap_value": 6.76,
+          "actual_value": 45.96
+        },
+        {
+          "feature": "temp_humidity_interaction",
+          "shap_value": 2.99,
+          "actual_value": 1006.26
+        }
+      ]
+    },
+    {
+      "region": "North Delhi",
+      "prediction_day": 1,
+      "base_value": 225.69,
+      "predicted_value": 288.58,
+      "top_features": [
+        {
+          "feature": "pm25",
+          "shap_value": 56.24,
+          "actual_value": 170.73
+        },
+        {
+          "feature": "pm10",
+          "shap_value": 6.65,
+          "actual_value": 282.75
+        },
+        {
+          "feature": "precip_mm",
+          "shap_value": 4.22,
+          "actual_value": 0.02
+        },
+        {
+          "feature": "temp_humidity_interaction",
+          "shap_value": 3.92,
+          "actual_value": 1011.16
+        },
+        {
+          "feature": "msl",
+          "shap_value": 2.6,
+          "actual_value": 1021.45
+        }
+      ]
+    },
+    {
+      "region": "North Delhi",
+      "prediction_day": 2,
+      "base_value": 224.96,
+      "predicted_value": 273.61,
+      "top_features": [
+        {
+          "feature": "pm25",
+          "shap_value": 48.43,
+          "actual_value": 170.73
+        },
+        {
+          "feature": "month",
+          "shap_value": 17.13,
+          "actual_value": 12.0
+        },
+        {
+          "feature": "temp_humidity_interaction",
+          "shap_value": 7.08,
+          "actual_value": 1011.16
+        },
+        {
+          "feature": "msl",
+          "shap_value": 6.14,
+          "actual_value": 1021.45
+        },
+        {
+          "feature": "wind_dir_cos",
+          "shap_value": 5.05,
+          "actual_value": 0.7
+        }
+      ]
+    },
+    {
+      "region": "North Delhi",
+      "prediction_day": 3,
+      "base_value": 224.43,
+      "predicted_value": 238.37,
+      "top_features": [
+        {
+          "feature": "msl",
+          "shap_value": 35.63,
+          "actual_value": 1021.45
+        },
+        {
+          "feature": "pm25",
+          "shap_value": 24.8,
+          "actual_value": 170.73
+        },
+        {
+          "feature": "month",
+          "shap_value": 14.82,
+          "actual_value": 12.0
+        },
+        {
+          "feature": "pm25_rolling_mean_7",
+          "shap_value": 7.23,
+          "actual_value": 144.75
+        },
+        {
+          "feature": "pm10_lag1",
+          "shap_value": 4.05,
+          "actual_value": 141.42
+        }
+      ]
+    },
+    {
+      "region": "Overall Delhi",
+      "prediction_day": 1,
+      "base_value": 221.23,
+      "predicted_value": 293.33,
+      "top_features": [
+        {
+          "feature": "pm25",
+          "shap_value": 47.88,
+          "actual_value": 162.24
+        },
+        {
+          "feature": "month",
+          "shap_value": 7.61,
+          "actual_value": 12.0
+        },
+        {
+          "feature": "no2",
+          "shap_value": 7.53,
+          "actual_value": 48.31
+        },
+        {
+          "feature": "pm10",
+          "shap_value": 6.44,
+          "actual_value": 263.68
+        },
+        {
+          "feature": "msl",
+          "shap_value": 6.36,
+          "actual_value": 1021.42
+        }
+      ]
+    },
+    {
+      "region": "Overall Delhi",
+      "prediction_day": 2,
+      "base_value": 222.59,
+      "predicted_value": 200.05,
+      "top_features": [
+        {
+          "feature": "pm25",
+          "shap_value": 27.93,
+          "actual_value": 162.24
+        },
+        {
+          "feature": "temp_humidity_interaction",
+          "shap_value": 13.64,
+          "actual_value": 1008.87
+        },
+        {
+          "feature": "msl",
+          "shap_value": 8.4,
+          "actual_value": 1021.42
+        },
+        {
+          "feature": "wind_dir_sin",
+          "shap_value": 6.78,
+          "actual_value": -0.81
+        },
+        {
+          "feature": "month",
+          "shap_value": 6.6,
+          "actual_value": 12.0
+        }
+      ]
+    },
+    {
+      "region": "Overall Delhi",
+      "prediction_day": 3,
+      "base_value": 219.67,
+      "predicted_value": 273.81,
+      "top_features": [
+        {
+          "feature": "msl",
+          "shap_value": 51.59,
+          "actual_value": 1021.42
+        },
+        {
+          "feature": "pm25",
+          "shap_value": 25.58,
+          "actual_value": 162.24
+        },
+        {
+          "feature": "pm10_lag1",
+          "shap_value": 10.95,
+          "actual_value": 140.34
+        },
+        {
+          "feature": "pm25_rolling_mean_7",
+          "shap_value": 9.68,
+          "actual_value": 146.68
+        },
+        {
+          "feature": "month",
+          "shap_value": 6.58,
+          "actual_value": 12.0
+        }
+      ]
+    }
+  ],
+  "counterfactuals": [
+    {
+      "region": "Central Delhi",
+      "original_day1_aqi": 302,
+      "original_category": "Hazardous",
+      "method": "Feature Perturbation",
+      "scenarios": [
+        {
+          "name": "pm25 reduced by 25%",
+          "type": "individual",
+          "feature_changes": {
+            "pm25": -25
+          },
+          "new_aqi": 248,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 54,
+          "percent_improvement": "17.9%",
+          "original_feature_value": {
+            "pm25": 154.62
+          },
+          "perturbed_feature_value": {
+            "pm25": 115.96
+          }
+        },
+        {
+          "name": "AQI_rolling_mean_7 reduced by 25%",
+          "type": "individual",
+          "feature_changes": {
+            "AQI_rolling_mean_7": -25
+          },
+          "new_aqi": 274,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 28,
+          "percent_improvement": "9.4%",
+          "original_feature_value": {
+            "AQI_rolling_mean_7": 293.0
+          },
+          "perturbed_feature_value": {
+            "AQI_rolling_mean_7": 219.75
+          }
+        },
+        {
+          "name": "no2 reduced by 25%",
+          "type": "individual",
+          "feature_changes": {
+            "no2": -25
+          },
+          "new_aqi": 301,
+          "new_category": "Hazardous",
+          "aqi_reduction": 1,
+          "percent_improvement": "0.5%",
+          "original_feature_value": {
+            "no2": 56.41
+          },
+          "perturbed_feature_value": {
+            "no2": 42.31
+          }
+        },
+        {
+          "name": "Top 2 features reduced by 25%",
+          "type": "combined",
+          "feature_changes": {
+            "pm25": -25,
+            "AQI_rolling_mean_7": -25
+          },
+          "new_aqi": 220,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 83,
+          "percent_improvement": "27.3%",
+          "original_feature_values": {
+            "pm25": 154.62,
+            "AQI_rolling_mean_7": 293.0
+          },
+          "perturbed_feature_values": {
+            "pm25": 115.96,
+            "AQI_rolling_mean_7": 219.75
+          }
+        },
+        {
+          "name": "Top 3 features reduced by 25%",
+          "type": "combined",
+          "feature_changes": {
+            "pm25": -25,
+            "AQI_rolling_mean_7": -25,
+            "co_lag1": -25
+          },
+          "new_aqi": 220,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 83,
+          "percent_improvement": "27.3%",
+          "original_feature_values": {
+            "pm25": 154.62,
+            "AQI_rolling_mean_7": 293.0,
+            "co_lag1": 1.07
+          },
+          "perturbed_feature_values": {
+            "pm25": 115.96,
+            "AQI_rolling_mean_7": 219.75,
+            "co_lag1": 0.81
+          }
+        },
+        {
+          "name": "Top 5 features reduced by 15%",
+          "type": "combined",
+          "feature_changes": {
+            "pm25": -15,
+            "AQI_rolling_mean_7": -15,
+            "co_lag1": -15,
+            "no2_lag1": -15,
+            "no2": -15
+          },
+          "new_aqi": 220,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 83,
+          "percent_improvement": "27.3%",
+          "original_feature_values": {
+            "pm25": 154.62,
+            "AQI_rolling_mean_7": 293.0,
+            "co_lag1": 1.07,
+            "no2_lag1": 33.56,
+            "no2": 56.41
+          },
+          "perturbed_feature_values": {
+            "pm25": 131.42,
+            "AQI_rolling_mean_7": 249.05,
+            "co_lag1": 0.91,
+            "no2_lag1": 28.52,
+            "no2": 47.95
+          }
+        }
+      ]
+    },
+    {
+      "region": "West Delhi",
+      "original_day1_aqi": 305,
+      "original_category": "Hazardous",
+      "method": "Feature Perturbation",
+      "scenarios": [
+        {
+          "name": "pm25 reduced by 25%",
+          "type": "individual",
+          "feature_changes": {
+            "pm25": -25
+          },
+          "new_aqi": 270,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 36,
+          "percent_improvement": "11.7%",
+          "original_feature_value": {
+            "pm25": 178.75
+          },
+          "perturbed_feature_value": {
+            "pm25": 134.06
+          }
+        },
+        {
+          "name": "no2 reduced by 25%",
+          "type": "individual",
+          "feature_changes": {
+            "no2": -25
+          },
+          "new_aqi": 298,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 7,
+          "percent_improvement": "2.4%",
+          "original_feature_value": {
+            "no2": 53.59
+          },
+          "perturbed_feature_value": {
+            "no2": 40.19
+          }
+        },
+        {
+          "name": "so2 reduced by 25%",
+          "type": "individual",
+          "feature_changes": {
+            "so2": -25
+          },
+          "new_aqi": 300,
+          "new_category": "Hazardous",
+          "aqi_reduction": 5,
+          "percent_improvement": "1.6%",
+          "original_feature_value": {
+            "so2": 18.67
+          },
+          "perturbed_feature_value": {
+            "so2": 14.0
+          }
+        },
+        {
+          "name": "pm10 reduced by 25%",
+          "type": "individual",
+          "feature_changes": {
+            "pm10": -25
+          },
+          "new_aqi": 299,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 6,
+          "percent_improvement": "2.1%",
+          "original_feature_value": {
+            "pm10": 295.94
+          },
+          "perturbed_feature_value": {
+            "pm10": 221.95
+          }
+        },
+        {
+          "name": "nox reduced by 25%",
+          "type": "individual",
+          "feature_changes": {
+            "nox": -25
+          },
+          "new_aqi": 299,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 6,
+          "percent_improvement": "2.1%",
+          "original_feature_value": {
+            "nox": 38.97
+          },
+          "perturbed_feature_value": {
+            "nox": 29.23
+          }
+        },
+        {
+          "name": "Top 2 features reduced by 25%",
+          "type": "combined",
+          "feature_changes": {
+            "pm25": -25,
+            "no2": -25
+          },
+          "new_aqi": 260,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 46,
+          "percent_improvement": "15.0%",
+          "original_feature_values": {
+            "pm25": 178.75,
+            "no2": 53.59
+          },
+          "perturbed_feature_values": {
+            "pm25": 134.06,
+            "no2": 40.19
+          }
+        },
+        {
+          "name": "Top 3 features reduced by 25%",
+          "type": "combined",
+          "feature_changes": {
+            "pm25": -25,
+            "no2": -25,
+            "so2": -25
+          },
+          "new_aqi": 254,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 51,
+          "percent_improvement": "16.8%",
+          "original_feature_values": {
+            "pm25": 178.75,
+            "no2": 53.59,
+            "so2": 18.67
+          },
+          "perturbed_feature_values": {
+            "pm25": 134.06,
+            "no2": 40.19,
+            "so2": 14.0
+          }
+        },
+        {
+          "name": "Top 5 features reduced by 15%",
+          "type": "combined",
+          "feature_changes": {
+            "pm25": -15,
+            "no2": -15,
+            "so2": -15,
+            "pm10": -15,
+            "nox": -15
+          },
+          "new_aqi": 252,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 54,
+          "percent_improvement": "17.6%",
+          "original_feature_values": {
+            "pm25": 178.75,
+            "no2": 53.59,
+            "so2": 18.67,
+            "pm10": 295.94,
+            "nox": 38.97
+          },
+          "perturbed_feature_values": {
+            "pm25": 151.94,
+            "no2": 45.55,
+            "so2": 15.87,
+            "pm10": 251.55,
+            "nox": 33.12
+          }
+        }
+      ]
+    },
+    {
+      "region": "East Delhi",
+      "original_day1_aqi": 312,
+      "original_category": "Hazardous",
+      "method": "Feature Perturbation",
+      "scenarios": [
+        {
+          "name": "pm25 reduced by 25%",
+          "type": "individual",
+          "feature_changes": {
+            "pm25": -25
+          },
+          "new_aqi": 277,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 35,
+          "percent_improvement": "11.2%",
+          "original_feature_value": {
+            "pm25": 174.84
+          },
+          "perturbed_feature_value": {
+            "pm25": 131.13
+          }
+        },
+        {
+          "name": "AQI_rolling_mean_7 reduced by 25%",
+          "type": "individual",
+          "feature_changes": {
+            "AQI_rolling_mean_7": -25
+          },
+          "new_aqi": 300,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 12,
+          "percent_improvement": "3.8%",
+          "original_feature_value": {
+            "AQI_rolling_mean_7": 286.14
+          },
+          "perturbed_feature_value": {
+            "AQI_rolling_mean_7": 214.61
+          }
+        },
+        {
+          "name": "pm10 reduced by 25%",
+          "type": "individual",
+          "feature_changes": {
+            "pm10": -25
+          },
+          "new_aqi": 306,
+          "new_category": "Hazardous",
+          "aqi_reduction": 6,
+          "percent_improvement": "1.8%",
+          "original_feature_value": {
+            "pm10": 286.38
+          },
+          "perturbed_feature_value": {
+            "pm10": 214.79
+          }
+        },
+        {
+          "name": "Top 2 features reduced by 25%",
+          "type": "combined",
+          "feature_changes": {
+            "pm25": -25,
+            "AQI_rolling_mean_7": -25
+          },
+          "new_aqi": 265,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 46,
+          "percent_improvement": "14.9%",
+          "original_feature_values": {
+            "pm25": 174.84,
+            "AQI_rolling_mean_7": 286.14
+          },
+          "perturbed_feature_values": {
+            "pm25": 131.13,
+            "AQI_rolling_mean_7": 214.61
+          }
+        },
+        {
+          "name": "Top 3 features reduced by 25%",
+          "type": "combined",
+          "feature_changes": {
+            "pm25": -25,
+            "AQI_rolling_mean_7": -25,
+            "so2_lag1": -25
+          },
+          "new_aqi": 265,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 46,
+          "percent_improvement": "14.9%",
+          "original_feature_values": {
+            "pm25": 174.84,
+            "AQI_rolling_mean_7": 286.14,
+            "so2_lag1": 4.5
+          },
+          "perturbed_feature_values": {
+            "pm25": 131.13,
+            "AQI_rolling_mean_7": 214.61,
+            "so2_lag1": 3.38
+          }
+        },
+        {
+          "name": "Top 5 features reduced by 15%",
+          "type": "combined",
+          "feature_changes": {
+            "pm25": -15,
+            "AQI_rolling_mean_7": -15,
+            "so2_lag1": -15,
+            "so2": -15,
+            "pm10": -15
+          },
+          "new_aqi": 277,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 34,
+          "percent_improvement": "11.1%",
+          "original_feature_values": {
+            "pm25": 174.84,
+            "AQI_rolling_mean_7": 286.14,
+            "so2_lag1": 4.5,
+            "so2": 7.2,
+            "pm10": 286.38
+          },
+          "perturbed_feature_values": {
+            "pm25": 148.61,
+            "AQI_rolling_mean_7": 243.22,
+            "so2_lag1": 3.83,
+            "so2": 6.12,
+            "pm10": 243.43
+          }
+        }
+      ]
+    },
+    {
+      "region": "South Delhi",
+      "original_day1_aqi": 271,
+      "original_category": "Very Unhealthy",
+      "method": "Feature Perturbation",
+      "scenarios": [
+        {
+          "name": "pm25 reduced by 25%",
+          "type": "individual",
+          "feature_changes": {
+            "pm25": -25
+          },
+          "new_aqi": 236,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 35,
+          "percent_improvement": "12.8%",
+          "original_feature_value": {
+            "pm25": 132.29
+          },
+          "perturbed_feature_value": {
+            "pm25": 99.22
+          }
+        },
+        {
+          "name": "pm10 reduced by 25%",
+          "type": "individual",
+          "feature_changes": {
+            "pm10": -25
+          },
+          "new_aqi": 270,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 1,
+          "percent_improvement": "0.3%",
+          "original_feature_value": {
+            "pm10": 217.49
+          },
+          "perturbed_feature_value": {
+            "pm10": 163.12
+          }
+        },
+        {
+          "name": "Top 2 features reduced by 25%",
+          "type": "combined",
+          "feature_changes": {
+            "pm25": -25,
+            "pm10": -25
+          },
+          "new_aqi": 235,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 36,
+          "percent_improvement": "13.1%",
+          "original_feature_values": {
+            "pm25": 132.29,
+            "pm10": 217.49
+          },
+          "perturbed_feature_values": {
+            "pm25": 99.22,
+            "pm10": 163.12
+          }
+        },
+        {
+          "name": "Top 3 features reduced by 25%",
+          "type": "combined",
+          "feature_changes": {
+            "pm25": -25,
+            "pm10": -25,
+            "so2": -25
+          },
+          "new_aqi": 235,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 36,
+          "percent_improvement": "13.1%",
+          "original_feature_values": {
+            "pm25": 132.29,
+            "pm10": 217.49,
+            "so2": 19.44
+          },
+          "perturbed_feature_values": {
+            "pm25": 99.22,
+            "pm10": 163.12,
+            "so2": 14.58
+          }
+        },
+        {
+          "name": "Top 5 features reduced by 15%",
+          "type": "combined",
+          "feature_changes": {
+            "pm25": -15,
+            "pm10": -15,
+            "so2": -15,
+            "co_lag1": -15,
+            "no2": -15
+          },
+          "new_aqi": 233,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 38,
+          "percent_improvement": "14.0%",
+          "original_feature_values": {
+            "pm25": 132.29,
+            "pm10": 217.49,
+            "so2": 19.44,
+            "co_lag1": 0.85,
+            "no2": 45.96
+          },
+          "perturbed_feature_values": {
+            "pm25": 112.45,
+            "pm10": 184.87,
+            "so2": 16.52,
+            "co_lag1": 0.72,
+            "no2": 39.07
+          }
+        }
+      ]
+    },
+    {
+      "region": "North Delhi",
+      "original_day1_aqi": 289,
+      "original_category": "Very Unhealthy",
+      "method": "Feature Perturbation",
+      "scenarios": [
+        {
+          "name": "pm25 reduced by 25%",
+          "type": "individual",
+          "feature_changes": {
+            "pm25": -25
+          },
+          "new_aqi": 268,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 21,
+          "percent_improvement": "7.1%",
+          "original_feature_value": {
+            "pm25": 170.73
+          },
+          "perturbed_feature_value": {
+            "pm25": 128.05
+          }
+        },
+        {
+          "name": "pm10 reduced by 25%",
+          "type": "individual",
+          "feature_changes": {
+            "pm10": -25
+          },
+          "new_aqi": 282,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 6,
+          "percent_improvement": "2.2%",
+          "original_feature_value": {
+            "pm10": 282.75
+          },
+          "perturbed_feature_value": {
+            "pm10": 212.07
+          }
+        },
+        {
+          "name": "Top 2 features reduced by 25%",
+          "type": "combined",
+          "feature_changes": {
+            "pm25": -25,
+            "pm10": -25
+          },
+          "new_aqi": 263,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 25,
+          "percent_improvement": "8.7%",
+          "original_feature_values": {
+            "pm25": 170.73,
+            "pm10": 282.75
+          },
+          "perturbed_feature_values": {
+            "pm25": 128.05,
+            "pm10": 212.07
+          }
+        },
+        {
+          "name": "Top 3 features reduced by 25%",
+          "type": "combined",
+          "feature_changes": {
+            "pm25": -25,
+            "pm10": -25,
+            "no2": -25
+          },
+          "new_aqi": 263,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 25,
+          "percent_improvement": "8.7%",
+          "original_feature_values": {
+            "pm25": 170.73,
+            "pm10": 282.75,
+            "no2": 39.63
+          },
+          "perturbed_feature_values": {
+            "pm25": 128.05,
+            "pm10": 212.07,
+            "no2": 29.72
+          }
+        },
+        {
+          "name": "Top 5 features reduced by 15%",
+          "type": "combined",
+          "feature_changes": {
+            "pm25": -15,
+            "pm10": -15,
+            "no2": -15,
+            "pm25_rolling_mean_7": -15,
+            "no2_lag1": -15
+          },
+          "new_aqi": 274,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 15,
+          "percent_improvement": "5.1%",
+          "original_feature_values": {
+            "pm25": 170.73,
+            "pm10": 282.75,
+            "no2": 39.63,
+            "pm25_rolling_mean_7": 144.75,
+            "no2_lag1": 27.66
+          },
+          "perturbed_feature_values": {
+            "pm25": 145.12,
+            "pm10": 240.34,
+            "no2": 33.69,
+            "pm25_rolling_mean_7": 123.04,
+            "no2_lag1": 23.51
+          }
+        }
+      ]
+    },
+    {
+      "region": "Overall Delhi",
+      "original_day1_aqi": 293,
+      "original_category": "Very Unhealthy",
+      "method": "Feature Perturbation",
+      "scenarios": [
+        {
+          "name": "pm25 reduced by 25%",
+          "type": "individual",
+          "feature_changes": {
+            "pm25": -25
+          },
+          "new_aqi": 240,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 54,
+          "percent_improvement": "18.3%",
+          "original_feature_value": {
+            "pm25": 162.24
+          },
+          "perturbed_feature_value": {
+            "pm25": 121.68
+          }
+        },
+        {
+          "name": "no2 reduced by 25%",
+          "type": "individual",
+          "feature_changes": {
+            "no2": -25
+          },
+          "new_aqi": 279,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 15,
+          "percent_improvement": "5.0%",
+          "original_feature_value": {
+            "no2": 48.31
+          },
+          "perturbed_feature_value": {
+            "no2": 36.23
+          }
+        },
+        {
+          "name": "pm10 reduced by 25%",
+          "type": "individual",
+          "feature_changes": {
+            "pm10": -25
+          },
+          "new_aqi": 290,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 3,
+          "percent_improvement": "1.0%",
+          "original_feature_value": {
+            "pm10": 263.68
+          },
+          "perturbed_feature_value": {
+            "pm10": 197.76
+          }
+        },
+        {
+          "name": "co reduced by 25%",
+          "type": "individual",
+          "feature_changes": {
+            "co": -25
+          },
+          "new_aqi": 282,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 11,
+          "percent_improvement": "3.7%",
+          "original_feature_value": {
+            "co": 1.34
+          },
+          "perturbed_feature_value": {
+            "co": 1.0
+          }
+        },
+        {
+          "name": "Top 2 features reduced by 25%",
+          "type": "combined",
+          "feature_changes": {
+            "pm25": -25,
+            "no2": -25
+          },
+          "new_aqi": 219,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 74,
+          "percent_improvement": "25.2%",
+          "original_feature_values": {
+            "pm25": 162.24,
+            "no2": 48.31
+          },
+          "perturbed_feature_values": {
+            "pm25": 121.68,
+            "no2": 36.23
+          }
+        },
+        {
+          "name": "Top 3 features reduced by 25%",
+          "type": "combined",
+          "feature_changes": {
+            "pm25": -25,
+            "no2": -25,
+            "pm10": -25
+          },
+          "new_aqi": 216,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 77,
+          "percent_improvement": "26.3%",
+          "original_feature_values": {
+            "pm25": 162.24,
+            "no2": 48.31,
+            "pm10": 263.68
+          },
+          "perturbed_feature_values": {
+            "pm25": 121.68,
+            "no2": 36.23,
+            "pm10": 197.76
+          }
+        },
+        {
+          "name": "Top 5 features reduced by 15%",
+          "type": "combined",
+          "feature_changes": {
+            "pm25": -15,
+            "no2": -15,
+            "pm10": -15,
+            "co": -15,
+            "pm25_rolling_mean_7": -15
+          },
+          "new_aqi": 265,
+          "new_category": "Very Unhealthy",
+          "aqi_reduction": 29,
+          "percent_improvement": "9.8%",
+          "original_feature_values": {
+            "pm25": 162.24,
+            "no2": 48.31,
+            "pm10": 263.68,
+            "co": 1.34,
+            "pm25_rolling_mean_7": 146.68
+          },
+          "perturbed_feature_values": {
+            "pm25": 137.91,
+            "no2": 41.07,
+            "pm10": 224.13,
+            "co": 1.14,
+            "pm25_rolling_mean_7": 124.68
+          }
+        }
+      ]
+    }
+  ],
+  "explanation": {
+    "prediction_explanation": "According to the forecast, the Overall Delhi Day+1 AQI is 293.33, indicating Very Poor air quality. The trend shows fluctuations over the next 3 days due to localized stagnation.",
+    "shap_interpretation": "The primary drivers are pm25, pm10, no2, so2, co, traffic_index, and fire_count, which act as the top SHAP features increasing the predicted AQI across all regions.",
+    "counterfactual_analysis": "A significant reduction in pm25, pm10, no2, so2, co, traffic_index, fire_count by 25% shows a massive drop in AQI, potentially changing the category. This is realistic if emergency restrictions are enforced.",
+    "health_impact_summary": "Prolonged exposure to these CPCB Very Poor AQI levels causes severe respiratory illnesses, particularly in vulnerable groups like children and the elderly. Face masks and indoor stays are mandatory.",
+    "recommended_intervention": "Implementing strict vehicular movement constraints, halting non-essential construction, and regulating industrial emissions immediately will substantially lower pollutant concentrations and help prevent reaching GRAP Stage III conditions."
+  }
+}

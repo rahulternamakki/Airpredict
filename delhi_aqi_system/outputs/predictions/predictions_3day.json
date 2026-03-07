@@ -1,0 +1,66 @@
+{
+  "prediction_date_start": "2025-01-01",
+  "generated_at": "2026-03-06 20:16:46",
+  "regions": {
+    "Central Delhi": {
+      "day_1": 302.44,
+      "day_2": 207.32,
+      "day_3": 295.83,
+      "category": [
+        "Very Poor",
+        "Poor",
+        "Poor"
+      ]
+    },
+    "West Delhi": {
+      "day_1": 305.42,
+      "day_2": 280.45,
+      "day_3": 301.41,
+      "category": [
+        "Very Poor",
+        "Poor",
+        "Very Poor"
+      ]
+    },
+    "East Delhi": {
+      "day_1": 311.51,
+      "day_2": 219.8,
+      "day_3": 284.68,
+      "category": [
+        "Very Poor",
+        "Poor",
+        "Poor"
+      ]
+    },
+    "South Delhi": {
+      "day_1": 270.9,
+      "day_2": 230.07,
+      "day_3": 278.3,
+      "category": [
+        "Poor",
+        "Poor",
+        "Poor"
+      ]
+    },
+    "North Delhi": {
+      "day_1": 288.58,
+      "day_2": 273.61,
+      "day_3": 238.37,
+      "category": [
+        "Poor",
+        "Poor",
+        "Poor"
+      ]
+    },
+    "Overall Delhi": {
+      "day_1": 293.33,
+      "day_2": 200.05,
+      "day_3": 273.81,
+      "category": [
+        "Poor",
+        "Poor",
+        "Poor"
+      ]
+    }
+  }
+}

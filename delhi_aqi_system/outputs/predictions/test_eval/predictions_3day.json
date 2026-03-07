@@ -1,0 +1,66 @@
+{
+  "prediction_date": "2024-08-15",
+  "generated_at": "2026-03-06 10:39:52",
+  "regions": {
+    "Central Delhi": {
+      "day_1": 72.75,
+      "day_2": 73.01,
+      "day_3": 73.01,
+      "category": [
+        "Satisfactory",
+        "Satisfactory",
+        "Satisfactory"
+      ]
+    },
+    "North Delhi": {
+      "day_1": 110.12,
+      "day_2": 110.12,
+      "day_3": 110.12,
+      "category": [
+        "Moderate",
+        "Moderate",
+        "Moderate"
+      ]
+    },
+    "West Delhi": {
+      "day_1": 129.66,
+      "day_2": 130.51,
+      "day_3": 130.51,
+      "category": [
+        "Moderate",
+        "Moderate",
+        "Moderate"
+      ]
+    },
+    "East Delhi": {
+      "day_1": 98.66,
+      "day_2": 100.3,
+      "day_3": 100.28,
+      "category": [
+        "Satisfactory",
+        "Moderate",
+        "Moderate"
+      ]
+    },
+    "South Delhi": {
+      "day_1": 90.24,
+      "day_2": 91.53,
+      "day_3": 91.56,
+      "category": [
+        "Satisfactory",
+        "Satisfactory",
+        "Satisfactory"
+      ]
+    },
+    "Overall Delhi": {
+      "day_1": 55.29,
+      "day_2": 56.13,
+      "day_3": 55.92,
+      "category": [
+        "Satisfactory",
+        "Satisfactory",
+        "Satisfactory"
+      ]
+    }
+  }
+}

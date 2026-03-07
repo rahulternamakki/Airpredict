@@ -1,0 +1,805 @@
+[
+  {
+    "region": "Central Delhi",
+    "original_day1_aqi": 302,
+    "original_category": "Hazardous",
+    "method": "Feature Perturbation",
+    "scenarios": [
+      {
+        "name": "pm25 reduced by 25%",
+        "type": "individual",
+        "feature_changes": {
+          "pm25": -25
+        },
+        "new_aqi": 248,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 54,
+        "percent_improvement": "17.9%",
+        "original_feature_value": {
+          "pm25": 154.62
+        },
+        "perturbed_feature_value": {
+          "pm25": 115.96
+        }
+      },
+      {
+        "name": "AQI_rolling_mean_7 reduced by 25%",
+        "type": "individual",
+        "feature_changes": {
+          "AQI_rolling_mean_7": -25
+        },
+        "new_aqi": 274,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 28,
+        "percent_improvement": "9.4%",
+        "original_feature_value": {
+          "AQI_rolling_mean_7": 293.0
+        },
+        "perturbed_feature_value": {
+          "AQI_rolling_mean_7": 219.75
+        }
+      },
+      {
+        "name": "no2 reduced by 25%",
+        "type": "individual",
+        "feature_changes": {
+          "no2": -25
+        },
+        "new_aqi": 301,
+        "new_category": "Hazardous",
+        "aqi_reduction": 1,
+        "percent_improvement": "0.5%",
+        "original_feature_value": {
+          "no2": 56.41
+        },
+        "perturbed_feature_value": {
+          "no2": 42.31
+        }
+      },
+      {
+        "name": "Top 2 features reduced by 25%",
+        "type": "combined",
+        "feature_changes": {
+          "pm25": -25,
+          "AQI_rolling_mean_7": -25
+        },
+        "new_aqi": 220,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 83,
+        "percent_improvement": "27.3%",
+        "original_feature_values": {
+          "pm25": 154.62,
+          "AQI_rolling_mean_7": 293.0
+        },
+        "perturbed_feature_values": {
+          "pm25": 115.96,
+          "AQI_rolling_mean_7": 219.75
+        }
+      },
+      {
+        "name": "Top 3 features reduced by 25%",
+        "type": "combined",
+        "feature_changes": {
+          "pm25": -25,
+          "AQI_rolling_mean_7": -25,
+          "co_lag1": -25
+        },
+        "new_aqi": 220,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 83,
+        "percent_improvement": "27.3%",
+        "original_feature_values": {
+          "pm25": 154.62,
+          "AQI_rolling_mean_7": 293.0,
+          "co_lag1": 1.07
+        },
+        "perturbed_feature_values": {
+          "pm25": 115.96,
+          "AQI_rolling_mean_7": 219.75,
+          "co_lag1": 0.81
+        }
+      },
+      {
+        "name": "Top 5 features reduced by 15%",
+        "type": "combined",
+        "feature_changes": {
+          "pm25": -15,
+          "AQI_rolling_mean_7": -15,
+          "co_lag1": -15,
+          "no2_lag1": -15,
+          "no2": -15
+        },
+        "new_aqi": 220,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 83,
+        "percent_improvement": "27.3%",
+        "original_feature_values": {
+          "pm25": 154.62,
+          "AQI_rolling_mean_7": 293.0,
+          "co_lag1": 1.07,
+          "no2_lag1": 33.56,
+          "no2": 56.41
+        },
+        "perturbed_feature_values": {
+          "pm25": 131.42,
+          "AQI_rolling_mean_7": 249.05,
+          "co_lag1": 0.91,
+          "no2_lag1": 28.52,
+          "no2": 47.95
+        }
+      }
+    ]
+  },
+  {
+    "region": "West Delhi",
+    "original_day1_aqi": 305,
+    "original_category": "Hazardous",
+    "method": "Feature Perturbation",
+    "scenarios": [
+      {
+        "name": "pm25 reduced by 25%",
+        "type": "individual",
+        "feature_changes": {
+          "pm25": -25
+        },
+        "new_aqi": 270,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 36,
+        "percent_improvement": "11.7%",
+        "original_feature_value": {
+          "pm25": 178.75
+        },
+        "perturbed_feature_value": {
+          "pm25": 134.06
+        }
+      },
+      {
+        "name": "no2 reduced by 25%",
+        "type": "individual",
+        "feature_changes": {
+          "no2": -25
+        },
+        "new_aqi": 298,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 7,
+        "percent_improvement": "2.4%",
+        "original_feature_value": {
+          "no2": 53.59
+        },
+        "perturbed_feature_value": {
+          "no2": 40.19
+        }
+      },
+      {
+        "name": "so2 reduced by 25%",
+        "type": "individual",
+        "feature_changes": {
+          "so2": -25
+        },
+        "new_aqi": 300,
+        "new_category": "Hazardous",
+        "aqi_reduction": 5,
+        "percent_improvement": "1.6%",
+        "original_feature_value": {
+          "so2": 18.67
+        },
+        "perturbed_feature_value": {
+          "so2": 14.0
+        }
+      },
+      {
+        "name": "pm10 reduced by 25%",
+        "type": "individual",
+        "feature_changes": {
+          "pm10": -25
+        },
+        "new_aqi": 299,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 6,
+        "percent_improvement": "2.1%",
+        "original_feature_value": {
+          "pm10": 295.94
+        },
+        "perturbed_feature_value": {
+          "pm10": 221.95
+        }
+      },
+      {
+        "name": "nox reduced by 25%",
+        "type": "individual",
+        "feature_changes": {
+          "nox": -25
+        },
+        "new_aqi": 299,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 6,
+        "percent_improvement": "2.1%",
+        "original_feature_value": {
+          "nox": 38.97
+        },
+        "perturbed_feature_value": {
+          "nox": 29.23
+        }
+      },
+      {
+        "name": "Top 2 features reduced by 25%",
+        "type": "combined",
+        "feature_changes": {
+          "pm25": -25,
+          "no2": -25
+        },
+        "new_aqi": 260,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 46,
+        "percent_improvement": "15.0%",
+        "original_feature_values": {
+          "pm25": 178.75,
+          "no2": 53.59
+        },
+        "perturbed_feature_values": {
+          "pm25": 134.06,
+          "no2": 40.19
+        }
+      },
+      {
+        "name": "Top 3 features reduced by 25%",
+        "type": "combined",
+        "feature_changes": {
+          "pm25": -25,
+          "no2": -25,
+          "so2": -25
+        },
+        "new_aqi": 254,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 51,
+        "percent_improvement": "16.8%",
+        "original_feature_values": {
+          "pm25": 178.75,
+          "no2": 53.59,
+          "so2": 18.67
+        },
+        "perturbed_feature_values": {
+          "pm25": 134.06,
+          "no2": 40.19,
+          "so2": 14.0
+        }
+      },
+      {
+        "name": "Top 5 features reduced by 15%",
+        "type": "combined",
+        "feature_changes": {
+          "pm25": -15,
+          "no2": -15,
+          "so2": -15,
+          "pm10": -15,
+          "nox": -15
+        },
+        "new_aqi": 252,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 54,
+        "percent_improvement": "17.6%",
+        "original_feature_values": {
+          "pm25": 178.75,
+          "no2": 53.59,
+          "so2": 18.67,
+          "pm10": 295.94,
+          "nox": 38.97
+        },
+        "perturbed_feature_values": {
+          "pm25": 151.94,
+          "no2": 45.55,
+          "so2": 15.87,
+          "pm10": 251.55,
+          "nox": 33.12
+        }
+      }
+    ]
+  },
+  {
+    "region": "East Delhi",
+    "original_day1_aqi": 312,
+    "original_category": "Hazardous",
+    "method": "Feature Perturbation",
+    "scenarios": [
+      {
+        "name": "pm25 reduced by 25%",
+        "type": "individual",
+        "feature_changes": {
+          "pm25": -25
+        },
+        "new_aqi": 277,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 35,
+        "percent_improvement": "11.2%",
+        "original_feature_value": {
+          "pm25": 174.84
+        },
+        "perturbed_feature_value": {
+          "pm25": 131.13
+        }
+      },
+      {
+        "name": "AQI_rolling_mean_7 reduced by 25%",
+        "type": "individual",
+        "feature_changes": {
+          "AQI_rolling_mean_7": -25
+        },
+        "new_aqi": 300,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 12,
+        "percent_improvement": "3.8%",
+        "original_feature_value": {
+          "AQI_rolling_mean_7": 286.14
+        },
+        "perturbed_feature_value": {
+          "AQI_rolling_mean_7": 214.61
+        }
+      },
+      {
+        "name": "pm10 reduced by 25%",
+        "type": "individual",
+        "feature_changes": {
+          "pm10": -25
+        },
+        "new_aqi": 306,
+        "new_category": "Hazardous",
+        "aqi_reduction": 6,
+        "percent_improvement": "1.8%",
+        "original_feature_value": {
+          "pm10": 286.38
+        },
+        "perturbed_feature_value": {
+          "pm10": 214.79
+        }
+      },
+      {
+        "name": "Top 2 features reduced by 25%",
+        "type": "combined",
+        "feature_changes": {
+          "pm25": -25,
+          "AQI_rolling_mean_7": -25
+        },
+        "new_aqi": 265,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 46,
+        "percent_improvement": "14.9%",
+        "original_feature_values": {
+          "pm25": 174.84,
+          "AQI_rolling_mean_7": 286.14
+        },
+        "perturbed_feature_values": {
+          "pm25": 131.13,
+          "AQI_rolling_mean_7": 214.61
+        }
+      },
+      {
+        "name": "Top 3 features reduced by 25%",
+        "type": "combined",
+        "feature_changes": {
+          "pm25": -25,
+          "AQI_rolling_mean_7": -25,
+          "so2_lag1": -25
+        },
+        "new_aqi": 265,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 46,
+        "percent_improvement": "14.9%",
+        "original_feature_values": {
+          "pm25": 174.84,
+          "AQI_rolling_mean_7": 286.14,
+          "so2_lag1": 4.5
+        },
+        "perturbed_feature_values": {
+          "pm25": 131.13,
+          "AQI_rolling_mean_7": 214.61,
+          "so2_lag1": 3.38
+        }
+      },
+      {
+        "name": "Top 5 features reduced by 15%",
+        "type": "combined",
+        "feature_changes": {
+          "pm25": -15,
+          "AQI_rolling_mean_7": -15,
+          "so2_lag1": -15,
+          "so2": -15,
+          "pm10": -15
+        },
+        "new_aqi": 277,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 34,
+        "percent_improvement": "11.1%",
+        "original_feature_values": {
+          "pm25": 174.84,
+          "AQI_rolling_mean_7": 286.14,
+          "so2_lag1": 4.5,
+          "so2": 7.2,
+          "pm10": 286.38
+        },
+        "perturbed_feature_values": {
+          "pm25": 148.61,
+          "AQI_rolling_mean_7": 243.22,
+          "so2_lag1": 3.83,
+          "so2": 6.12,
+          "pm10": 243.43
+        }
+      }
+    ]
+  },
+  {
+    "region": "South Delhi",
+    "original_day1_aqi": 271,
+    "original_category": "Very Unhealthy",
+    "method": "Feature Perturbation",
+    "scenarios": [
+      {
+        "name": "pm25 reduced by 25%",
+        "type": "individual",
+        "feature_changes": {
+          "pm25": -25
+        },
+        "new_aqi": 236,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 35,
+        "percent_improvement": "12.8%",
+        "original_feature_value": {
+          "pm25": 132.29
+        },
+        "perturbed_feature_value": {
+          "pm25": 99.22
+        }
+      },
+      {
+        "name": "pm10 reduced by 25%",
+        "type": "individual",
+        "feature_changes": {
+          "pm10": -25
+        },
+        "new_aqi": 270,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 1,
+        "percent_improvement": "0.3%",
+        "original_feature_value": {
+          "pm10": 217.49
+        },
+        "perturbed_feature_value": {
+          "pm10": 163.12
+        }
+      },
+      {
+        "name": "Top 2 features reduced by 25%",
+        "type": "combined",
+        "feature_changes": {
+          "pm25": -25,
+          "pm10": -25
+        },
+        "new_aqi": 235,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 36,
+        "percent_improvement": "13.1%",
+        "original_feature_values": {
+          "pm25": 132.29,
+          "pm10": 217.49
+        },
+        "perturbed_feature_values": {
+          "pm25": 99.22,
+          "pm10": 163.12
+        }
+      },
+      {
+        "name": "Top 3 features reduced by 25%",
+        "type": "combined",
+        "feature_changes": {
+          "pm25": -25,
+          "pm10": -25,
+          "so2": -25
+        },
+        "new_aqi": 235,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 36,
+        "percent_improvement": "13.1%",
+        "original_feature_values": {
+          "pm25": 132.29,
+          "pm10": 217.49,
+          "so2": 19.44
+        },
+        "perturbed_feature_values": {
+          "pm25": 99.22,
+          "pm10": 163.12,
+          "so2": 14.58
+        }
+      },
+      {
+        "name": "Top 5 features reduced by 15%",
+        "type": "combined",
+        "feature_changes": {
+          "pm25": -15,
+          "pm10": -15,
+          "so2": -15,
+          "co_lag1": -15,
+          "no2": -15
+        },
+        "new_aqi": 233,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 38,
+        "percent_improvement": "14.0%",
+        "original_feature_values": {
+          "pm25": 132.29,
+          "pm10": 217.49,
+          "so2": 19.44,
+          "co_lag1": 0.85,
+          "no2": 45.96
+        },
+        "perturbed_feature_values": {
+          "pm25": 112.45,
+          "pm10": 184.87,
+          "so2": 16.52,
+          "co_lag1": 0.72,
+          "no2": 39.07
+        }
+      }
+    ]
+  },
+  {
+    "region": "North Delhi",
+    "original_day1_aqi": 289,
+    "original_category": "Very Unhealthy",
+    "method": "Feature Perturbation",
+    "scenarios": [
+      {
+        "name": "pm25 reduced by 25%",
+        "type": "individual",
+        "feature_changes": {
+          "pm25": -25
+        },
+        "new_aqi": 268,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 21,
+        "percent_improvement": "7.1%",
+        "original_feature_value": {
+          "pm25": 170.73
+        },
+        "perturbed_feature_value": {
+          "pm25": 128.05
+        }
+      },
+      {
+        "name": "pm10 reduced by 25%",
+        "type": "individual",
+        "feature_changes": {
+          "pm10": -25
+        },
+        "new_aqi": 282,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 6,
+        "percent_improvement": "2.2%",
+        "original_feature_value": {
+          "pm10": 282.75
+        },
+        "perturbed_feature_value": {
+          "pm10": 212.07
+        }
+      },
+      {
+        "name": "Top 2 features reduced by 25%",
+        "type": "combined",
+        "feature_changes": {
+          "pm25": -25,
+          "pm10": -25
+        },
+        "new_aqi": 263,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 25,
+        "percent_improvement": "8.7%",
+        "original_feature_values": {
+          "pm25": 170.73,
+          "pm10": 282.75
+        },
+        "perturbed_feature_values": {
+          "pm25": 128.05,
+          "pm10": 212.07
+        }
+      },
+      {
+        "name": "Top 3 features reduced by 25%",
+        "type": "combined",
+        "feature_changes": {
+          "pm25": -25,
+          "pm10": -25,
+          "no2": -25
+        },
+        "new_aqi": 263,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 25,
+        "percent_improvement": "8.7%",
+        "original_feature_values": {
+          "pm25": 170.73,
+          "pm10": 282.75,
+          "no2": 39.63
+        },
+        "perturbed_feature_values": {
+          "pm25": 128.05,
+          "pm10": 212.07,
+          "no2": 29.72
+        }
+      },
+      {
+        "name": "Top 5 features reduced by 15%",
+        "type": "combined",
+        "feature_changes": {
+          "pm25": -15,
+          "pm10": -15,
+          "no2": -15,
+          "pm25_rolling_mean_7": -15,
+          "no2_lag1": -15
+        },
+        "new_aqi": 274,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 15,
+        "percent_improvement": "5.1%",
+        "original_feature_values": {
+          "pm25": 170.73,
+          "pm10": 282.75,
+          "no2": 39.63,
+          "pm25_rolling_mean_7": 144.75,
+          "no2_lag1": 27.66
+        },
+        "perturbed_feature_values": {
+          "pm25": 145.12,
+          "pm10": 240.34,
+          "no2": 33.69,
+          "pm25_rolling_mean_7": 123.04,
+          "no2_lag1": 23.51
+        }
+      }
+    ]
+  },
+  {
+    "region": "Overall Delhi",
+    "original_day1_aqi": 293,
+    "original_category": "Very Unhealthy",
+    "method": "Feature Perturbation",
+    "scenarios": [
+      {
+        "name": "pm25 reduced by 25%",
+        "type": "individual",
+        "feature_changes": {
+          "pm25": -25
+        },
+        "new_aqi": 240,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 54,
+        "percent_improvement": "18.3%",
+        "original_feature_value": {
+          "pm25": 162.24
+        },
+        "perturbed_feature_value": {
+          "pm25": 121.68
+        }
+      },
+      {
+        "name": "no2 reduced by 25%",
+        "type": "individual",
+        "feature_changes": {
+          "no2": -25
+        },
+        "new_aqi": 279,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 15,
+        "percent_improvement": "5.0%",
+        "original_feature_value": {
+          "no2": 48.31
+        },
+        "perturbed_feature_value": {
+          "no2": 36.23
+        }
+      },
+      {
+        "name": "pm10 reduced by 25%",
+        "type": "individual",
+        "feature_changes": {
+          "pm10": -25
+        },
+        "new_aqi": 290,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 3,
+        "percent_improvement": "1.0%",
+        "original_feature_value": {
+          "pm10": 263.68
+        },
+        "perturbed_feature_value": {
+          "pm10": 197.76
+        }
+      },
+      {
+        "name": "co reduced by 25%",
+        "type": "individual",
+        "feature_changes": {
+          "co": -25
+        },
+        "new_aqi": 282,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 11,
+        "percent_improvement": "3.7%",
+        "original_feature_value": {
+          "co": 1.34
+        },
+        "perturbed_feature_value": {
+          "co": 1.0
+        }
+      },
+      {
+        "name": "Top 2 features reduced by 25%",
+        "type": "combined",
+        "feature_changes": {
+          "pm25": -25,
+          "no2": -25
+        },
+        "new_aqi": 219,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 74,
+        "percent_improvement": "25.2%",
+        "original_feature_values": {
+          "pm25": 162.24,
+          "no2": 48.31
+        },
+        "perturbed_feature_values": {
+          "pm25": 121.68,
+          "no2": 36.23
+        }
+      },
+      {
+        "name": "Top 3 features reduced by 25%",
+        "type": "combined",
+        "feature_changes": {
+          "pm25": -25,
+          "no2": -25,
+          "pm10": -25
+        },
+        "new_aqi": 216,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 77,
+        "percent_improvement": "26.3%",
+        "original_feature_values": {
+          "pm25": 162.24,
+          "no2": 48.31,
+          "pm10": 263.68
+        },
+        "perturbed_feature_values": {
+          "pm25": 121.68,
+          "no2": 36.23,
+          "pm10": 197.76
+        }
+      },
+      {
+        "name": "Top 5 features reduced by 15%",
+        "type": "combined",
+        "feature_changes": {
+          "pm25": -15,
+          "no2": -15,
+          "pm10": -15,
+          "co": -15,
+          "pm25_rolling_mean_7": -15
+        },
+        "new_aqi": 265,
+        "new_category": "Very Unhealthy",
+        "aqi_reduction": 29,
+        "percent_improvement": "9.8%",
+        "original_feature_values": {
+          "pm25": 162.24,
+          "no2": 48.31,
+          "pm10": 263.68,
+          "co": 1.34,
+          "pm25_rolling_mean_7": 146.68
+        },
+        "perturbed_feature_values": {
+          "pm25": 137.91,
+          "no2": 41.07,
+          "pm10": 224.13,
+          "co": 1.14,
+          "pm25_rolling_mean_7": 124.68
+        }
+      }
+    ]
+  }
+]
