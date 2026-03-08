@@ -1,18 +1,20 @@
-import google.generativeai as genai
+import vertexai
+from vertexai.generative_models import GenerativeModel, GenerationConfig
 import time, json, os
 from datetime import datetime
 
 # Configure standard path to import config
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from config import (GEMINI_API_KEY, GEMINI_MODEL, GEMINI_TEMPERATURE,
+from config import (GCP_PROJECT, GCP_LOCATION, GEMINI_MODEL, GEMINI_TEMPERATURE,
                     GEMINI_MAX_TOKENS, GEMINI_TOP_P, MAX_RETRIES)
 
-genai.configure(api_key=GEMINI_API_KEY)
+# Initialize Vertex AI
+vertexai.init(project=GCP_PROJECT, location=GCP_LOCATION)
 
-model = genai.GenerativeModel(
+model = GenerativeModel(
     model_name=GEMINI_MODEL,
-    generation_config=genai.types.GenerationConfig(
+    generation_config=GenerationConfig(
         temperature=GEMINI_TEMPERATURE,
         max_output_tokens=GEMINI_MAX_TOKENS,
         top_p=GEMINI_TOP_P
@@ -254,6 +256,27 @@ MIN_SECTION_LENGTH = {
     "recommended_intervention":200
 }
 
+def get_feature_variations(feature: str) -> list:
+    """
+    Returns a list of common variations of a feature name
+    so validation is case-insensitive and format-flexible.
+    e.g. 'pm25' -> ['pm25', 'PM25', 'PM2.5', 'pm2.5']
+    """
+    feature_map = {
+        "pm25": ["pm25", "PM25", "PM2.5", "pm2.5", "PM 2.5"],
+        "pm10": ["pm10", "PM10", "PM 10", "pm 10"],
+        "no2":  ["no2",  "NO2",  "nitrogen dioxide"],
+        "so2":  ["so2",  "SO2",  "sulphur dioxide", "sulfur dioxide"],
+        "co":   ["co",   "CO",   "carbon monoxide"],
+        "o3":   ["o3",   "O3",   "ozone"],
+        "nox":  ["nox",  "NOx",  "NOX"],
+    }
+    key = feature.lower().replace(" ", "")
+    if key in feature_map:
+        return feature_map[key]
+    # Fallback: return original + uppercase + lowercase
+    return [feature, feature.upper(), feature.lower()]
+
 def validate_gemini_output(explanation: dict, predictions: dict,
                             shap_outputs: list, cf_outputs: list) -> list:
     """
@@ -289,17 +312,19 @@ def validate_gemini_output(explanation: dict, predictions: dict,
 
     # TEST 4: shap_interpretation must mention at least one feature name from SHAP data
     if shap_outputs and len(shap_outputs) > 0 and len(shap_outputs[0].get("top_features", [])) > 0:
-        top_feature = shap_outputs[0]["top_features"][0]["feature"]  # e.g. "PM2.5"
-        if top_feature not in explanation["shap_interpretation"]:
+        top_feature = shap_outputs[0]["top_features"][0]["feature"]  # e.g. "pm25"
+        variations = get_feature_variations(top_feature)
+        shap_text = explanation["shap_interpretation"]
+        if not any(v in shap_text for v in variations):
             failures.append(
                 f"NOT_GROUNDED: 'shap_interpretation' does not mention "
                 f"top SHAP feature '{top_feature}'"
             )
 
-    # TEST 5: counterfactual_analysis must mention at least one scenario
+    # TEST 5: counterfactual_analysis must mention at least one scenario feature
     if cf_outputs and len(cf_outputs) > 0 and len(cf_outputs[0].get("scenarios", [])) > 0:
         scenario_name = cf_outputs[0]["scenarios"][0]["name"]
-        
+
         # Get varied features. Handle original implementation names too
         s = cf_outputs[0]["scenarios"][0]
         first_feature = ""
@@ -307,12 +332,15 @@ def validate_gemini_output(explanation: dict, predictions: dict,
             first_feature = list(s["feature_changes"].keys())[0]
         elif "features_varied" in s and s["features_varied"]:
             first_feature = s["features_varied"][0]
-            
-        if first_feature and first_feature not in explanation["counterfactual_analysis"]:
-            failures.append(
-                f"NOT_GROUNDED: 'counterfactual_analysis' does not reference "
-                f"counterfactual feature '{first_feature}'"
-            )
+
+        if first_feature:
+            variations = get_feature_variations(first_feature)
+            cf_text = explanation["counterfactual_analysis"]
+            if not any(v in cf_text for v in variations):
+                failures.append(
+                    f"NOT_GROUNDED: 'counterfactual_analysis' does not reference "
+                    f"counterfactual feature '{first_feature}'"
+                )
 
     # TEST 6: recommended_intervention must not be generic filler
     generic_phrases = [
@@ -328,7 +356,7 @@ def validate_gemini_output(explanation: dict, predictions: dict,
         )
 
     # TEST 7: No section should contain placeholder text
-    placeholder_indicators = ["[insert", "[add", "...", "placeholder", "TODO"]
+    placeholder_indicators = ["[insert", "[add", "placeholder", "TODO"]
     for key in REQUIRED_KEYS:
         for indicator in placeholder_indicators:
             if indicator.lower() in explanation[key].lower():

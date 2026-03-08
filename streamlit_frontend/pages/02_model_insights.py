@@ -63,4 +63,8 @@ if shap_entry:
             day1_entries = [e for e in all_shap if e.get("prediction_day") == 1]
             for entry in day1_entries:
                 st.subheader(entry["region"])
-                st.plotly_chart(build_shap_feature_bar(entry), use_container_width=True)
+                st.plotly_chart(
+                    build_shap_feature_bar(entry), 
+                    use_container_width=True,
+                    key=f"shap_{entry['region']}"
+                )

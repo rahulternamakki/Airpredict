@@ -50,7 +50,7 @@ def render_explanation_page():
         st.title("🤖 AI Scientific Explanation")
         st.caption(
             f"Generated: {ran_at.strftime('%d %b %Y, %I:%M %p')} | "
-            f"Model: {result.get('gemini_model_used', 'gemini-1.5-pro')} | "
+            f"Model: {result.get('gemini_model_used', 'gemini-2.5-flash-lite')} | "
             f"Attempts: {result.get('gemini_attempts', 1)}/3"
         )
     with col2:

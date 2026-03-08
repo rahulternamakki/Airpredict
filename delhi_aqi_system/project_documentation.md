@@ -63,11 +63,11 @@ delhi_aqi_system/
 - Simulates targeted policy actions by synthetically reducing these feature weights by 25% and dynamically predicting the new resulting AQI value. Contains individual and combined (multi-feature) scenario analyses, exported to `counterfactual_results.json`.
 
 ### Phase 6: Core LLM Summarization (`pipeline/gemini_explainer.py`)
-- Consolidates all generated JSONs (Predictions, SHAP, Counterfactuals) into a unified payload sent to the `gemini-1.5-pro` API. 
+- Consolidates all generated JSONs (Predictions, SHAP, Counterfactuals) into a unified payload sent to the `gemini-2.5-flash-lite` API. 
 - The LLM outputs a highly structured 5-part scientific summary: Forecast Explanation, SHAP Interpretation, Counterfactual Analysis, Health Impact, and Recommended Interventions.
 
 ### Phase 7: AI Chat Agents (`agents/`)
-Dual specialized agents interacting via `gemini-1.5-flash`:
+Dual specialized agents interacting via `gemini-2.5-flash-lite`:
 - **Vayu (Public Assistant):** Simplistic, empathetic, uses everyday language. Focused on health advisories and safe locations.
 - **DELPHI (Policy Advisor):** Technical, data-driven. Recommends policy actions utilizing counterfactual calculations and SHAP attributions.
 - Employs RAG-lite by dynamically converting all prediction/SHAP JSON outputs into system context.

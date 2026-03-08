@@ -1,20 +1,30 @@
 # agents/agent_core.py
 
-import google.generativeai as genai
+import vertexai
+from vertexai.generative_models import GenerativeModel, ChatSession, GenerationConfig
 import time
-from config import GEMINI_API_KEY, AGENT_MODEL, MAX_RETRIES
+from config import GCP_PROJECT, GCP_LOCATION, AGENT_MODEL, MAX_RETRIES
 from agents.system_prompts import get_system_prompt
+from vertexai.generative_models import GenerativeModel, Content, Part, GenerationConfig
 
-genai.configure(api_key=GEMINI_API_KEY)
+_model = None
 
-agent_model = genai.GenerativeModel(
-    model_name=AGENT_MODEL,   # "gemini-1.5-flash"
-    generation_config=genai.types.GenerationConfig(
-        temperature=0.7,      # More conversational than Phase 6 explanation (0.2)
-        max_output_tokens=1024,
-        top_p=0.9
-    )
-)
+def get_model():
+    """Lazy initialization of the Vertex AI model."""
+    global _model
+    if _model is None:
+        print(f"[Agent] Initializing Vertex AI: project={GCP_PROJECT}, location={GCP_LOCATION}")
+        vertexai.init(project=GCP_PROJECT, location=GCP_LOCATION)
+        _model = GenerativeModel(
+            model_name=AGENT_MODEL,   # e.g. "gemini-2.0-flash-001"
+            generation_config=GenerationConfig(
+                temperature=0.7,
+                max_output_tokens=1024,
+                top_p=0.9
+            )
+        )
+    return _model
+
 
 
 def build_agent_messages(user_message: str, agent_type: str,
@@ -59,34 +69,39 @@ def call_agent(user_message: str, agent_type: str,
                context: str, history: list,
                max_retries: int = MAX_RETRIES) -> str:
     """
-    Calls Gemini Flash with full conversation history. Returns response text.
-
-    Args:
-        user_message : latest message from the user
-        agent_type   : "public" or "policy"
-        context      : pre-built context string from context_builder.py
-        history      : list of {"role": "user"/"model", "content": "..."}
-        max_retries  : retry attempts on API failure
-
-    Returns:
-        response_text (str)
+    Calls Vertex Gemini with full conversation history using generate_content.
+    Returns response text.
     """
     messages = build_agent_messages(user_message, agent_type, context, history)
+    
+    # Convert list of dicts to list of Content objects for the SDK
+    content_messages = []
+    for msg in messages:
+        role = "user" if msg["role"] == "user" else "model"
+        content_messages.append(Content(role=role, parts=[Part.from_text(msg["parts"][0])]))
+
+    model = get_model()
 
     for attempt in range(max_retries):
         try:
-            # Pass all messages except the last as history, last as new message
-            chat     = agent_model.start_chat(history=messages[:-1])
-            response = chat.send_message(messages[-1]["parts"][0])
+            print(f"[Agent] Calling generate_content (attempt {attempt+1})...")
+            # Log the number of tokens or message count might be useful
+            print(f"[Agent] Message count: {len(content_messages)}")
+            
+            start_time = time.time()
+            response = model.generate_content(content_messages)
+            print(f"[Agent] Response received in {time.time() - start_time:.2f}s")
+            
             return response.text
         except Exception as e:
             wait = 2 ** attempt
+            print(f"[Agent] Attempt {attempt+1} failed: {e}")
             if attempt < max_retries - 1:
                 time.sleep(wait)
             else:
                 return (
-                    "I'm having trouble connecting right now. "
-                    "Please try again in a moment. 🔄"
+                    f"I'm having trouble connecting to Vertex AI: {str(e)}. "
+                    "Please check your GCP project and credentials. 🔄"
                 )
 
 
