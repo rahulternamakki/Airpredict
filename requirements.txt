@@ -1,0 +1,11 @@
+streamlit
+requests
+plotly
+pandas
+python-dotenv
+# Backend dependencies (if you want to run pipeline/api on the same server)
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic
+google-cloud-aiplatform
