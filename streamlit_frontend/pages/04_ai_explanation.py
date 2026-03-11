@@ -3,8 +3,10 @@
 import streamlit as st
 from api_client import get_full_explanation, get_pipeline_status
 from components.staleness_banner import render_staleness_banner
+from components.sidebar import render_sidebar
 
 st.set_page_config(page_title="AI Explanation | Delhi AQI", page_icon="🤖", layout="wide")
+render_sidebar()
 
 st.title("🤖 AI Scientific Explanation")
 st.caption("Gemini-generated atmospheric science analysis of today's AQI forecast.")

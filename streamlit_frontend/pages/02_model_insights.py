@@ -4,8 +4,10 @@ import streamlit as st
 from config_frontend import REGIONS
 from api_client import get_all_shap, get_shap_region_day
 from components.charts import build_shap_waterfall, build_shap_feature_bar
+from components.sidebar import render_sidebar
 
 st.set_page_config(page_title="Model Insights | Delhi AQI", page_icon="📊", layout="wide")
+render_sidebar()
 
 st.title("📊 Model Insights — SHAP Analysis")
 st.caption("Understand why the model made each prediction using SHAP feature attributions.")

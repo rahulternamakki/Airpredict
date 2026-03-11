@@ -17,4 +17,13 @@ _agent/
 brain/
 walkthrough.md
 implementation_plan.md
-task.md
+
+# Next.js (frontend-next)
+frontend-next/node_modules/
+frontend-next/.next/
+frontend-next/out/
+frontend-next/build/
+frontend-next/.env*.local
+frontend-next/.vercel
+frontend-next/*.tsbuildinfo
+frontend-next/next-env.d.ts

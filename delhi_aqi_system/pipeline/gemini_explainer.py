@@ -177,23 +177,20 @@ scenarios provided. Generate a rigorous scientific report in EXACTLY the followi
 no markdown fences, no text outside the JSON object.
 
 STRICT RULES:
-1. Reference actual numbers from the data -- never invent or approximate figures
-2. Cite specific SHAP values when explaining drivers (e.g., "PM2.5 SHAP=+28.4 indicates...")
-3. Reference specific counterfactual scenarios by name and their AQI delta
-4. Use correct atmospheric science terminology -- avoid vague phrases like "pollution is high"
-5. Assess counterfactual feasibility: is the required feature change physically achievable 
-   in 24-72 hours, and what specific policy mechanism (GRAP action, odd-even, industrial 
-   shutdown, construction ban) could produce it?
-6. Explain inter-region differences using geographic and emission-source reasoning
-7. If AQI trend is worsening Day+1->Day+3, explain the likely atmospheric mechanism
+1. Use simple, non-scientific language for the general public.
+2. Always use a bulleted list for every section (starting with "- ").
+3. Provide FEWER bullet points (3-4 per section).
+4. Make each bullet point DETAILED and COMPREHENSIVE ("big explanation").
+5. Use actual numbers from the data for credibility.
+6. Avoid long technical jargon; explain concepts simply.
 
 REQUIRED OUTPUT FORMAT (valid JSON, all 5 keys present, no extras):
 {
-  "prediction_explanation": "Scientific narrative of the 3-day AQI forecast for all regions. Explain the trend direction, atmospheric conditions driving it, and regional differences. Min 150 words.",
-  "shap_interpretation": "For each region, explain what each top SHAP feature means atmospherically. Why is PM2.5/NO2/etc at this level? What emission sources explain it? What atmospheric condition explains the negative SHAP features? Min 150 words.",
-  "counterfactual_analysis": "For each scenario, explain: (1) what the AQI reduction means in category terms, (2) whether the required feature change is physically realistic in 24-72 hours, (3) which specific GRAP action or policy could achieve it. Identify the single best intervention. Min 150 words.",
-  "health_impact_summary": "For the predicted AQI levels, specify exact health risks using CPCB categories. List specific vulnerable groups, recommended protective actions, and whether GRAP emergency protocols should be triggered. Min 100 words.",
-  "recommended_intervention": "Single clearest policy recommendation based on counterfactual results. Name the specific intervention, the expected AQI reduction in points and percentage, which region benefits most, and the GRAP stage it would help avoid or exit. Min 80 words."
+  "prediction_explanation": "Detailed 3-day forecast summary. Explain the trend for all regions with depth. Use 3-4 detailed bullets. Max 150 words.",
+  "shap_interpretation": "Detailed list of why AQI is what it is. Explain major factors (PM2.5, NO2, Weather) with simple depth. Use 3-4 detailed bullets. Max 150 words.",
+  "counterfactual_analysis": "Detailed comparison of what-if scenarios. Explain the impact of different actions thoroughly. Use 3 detailed bullets. Max 120 words.",
+  "health_impact_summary": "Detailed health advice for different groups. Explain risks and actions with clarity and depth. Use 3 detailed bullets. Max 100 words.",
+  "recommended_intervention": "Detailed action plan. Explain exactly what steps to take and why. Use 2-3 detailed bullets. Max 80 words."
 }
 """
 
@@ -247,13 +244,13 @@ REQUIRED_KEYS = [
     "recommended_intervention"
 ]
 
-# Minimum character length per section (too short = hallucination or truncation)
+# Minimum character length per section (Adjusted for detailed bullets)
 MIN_SECTION_LENGTH = {
-    "prediction_explanation":  400,
-    "shap_interpretation":     400,
-    "counterfactual_analysis": 400,
-    "health_impact_summary":   250,
-    "recommended_intervention":200
+    "prediction_explanation":  350,
+    "shap_interpretation":     350,
+    "counterfactual_analysis": 300,
+    "health_impact_summary":   200,
+    "recommended_intervention":150
 }
 
 def get_feature_variations(feature: str) -> list:

@@ -5,8 +5,10 @@ import pandas as pd
 from config_frontend import REGIONS, AQI_COLORS
 from api_client import get_all_counterfactuals, get_counterfactual_region
 from components.charts import build_counterfactual_bar
+from components.sidebar import render_sidebar
 
 st.set_page_config(page_title="What-If | Delhi AQI", page_icon="🔄", layout="wide")
+render_sidebar()
 
 st.title("🔄 What-If Scenario Analysis")
 st.caption("Counterfactual interventions: how much can AQI be reduced by changing key emission drivers?")

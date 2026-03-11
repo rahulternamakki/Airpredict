@@ -3,9 +3,11 @@
 import streamlit as st
 from api_client import chat_with_agent, get_suggested_questions
 from components.chat_ui import render_chat_history, render_question_chips
+from components.sidebar import render_sidebar
 
 st.set_page_config(page_title="AI Agents | Delhi AQI",
                    page_icon="🤖", layout="wide")
+render_sidebar()
 
 # ── Session state init (both agents) ─────────────────────────
 if "public_history" not in st.session_state:
